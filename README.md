@@ -3,6 +3,7 @@ AWS **Security Hub** is a **cloud security posture management (CSPM)** service t
 
 > The Security Hub provides a single place in the AWS environment to aggregate, organize, and prioritize security alerts and discoveries from multiple AWS security services. This may be Amazon GuardDuty, Amazon Inspector, Amazon Macie, IAM, Access Analyzer, AWS Firewall Manager. But it also supports third-party partner products.
 
+![image](https://github.com/user-attachments/assets/93e97d18-4cd9-4547-83a7-9e271cd004ce)
 
 ---
 
