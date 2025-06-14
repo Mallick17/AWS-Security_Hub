@@ -154,10 +154,3 @@ Security Hub integrates with many AWS services, either by **receiving** or **for
 
 ---
 
-## 📎 Final Thoughts
-
-AWS Security Hub is **essential for organizations looking to unify security visibility, enforce best practices, and prepare for compliance audits**. It reduces the operational burden by collecting, standardizing, and helping respond to security alerts across all AWS accounts and services.
-
----
-
-Let me know if you'd like this exported as a `README.md` file or need additional visuals like diagrams or workflows.
