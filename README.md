@@ -68,7 +68,7 @@ The **AWS Foundational Security Best Practices** standard is a curated set of **
 
 </details>
 
----
+
 
 <details>
  <summary>Detailed Explaination of 2. CIS AWS Foundations Benchmark</summary>
@@ -101,7 +101,7 @@ The **Center for Internet Security (CIS)** Benchmark is an **independent** secur
 
 </details>
 
----
+
 
 <details>
  <summary>Detailed Explaination of 3. PCI DSS v3.2.1</summary>
@@ -134,7 +134,7 @@ The **Payment Card Industry Data Security Standard (PCI DSS)** is a global compl
 
 </details>
 
----
+
 
 <details>
  <summary>Detailed Explaination of 4. NIST SP 800-53 Rev 5</summary>
@@ -167,7 +167,7 @@ The **National Institute of Standards and Technology (NIST) SP 800-53** is a cat
 
 </details>
 
----
+
 
 <details>
  <summary>Detailed Explaination of 5. NIST Cybersecurity Framework (CSF)</summary>
