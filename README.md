@@ -21,6 +21,13 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 * Help you assess and maintain **security compliance**,
 * Provide **security scores** to measure posture across accounts.
 
+     ```mermaid
+     graph LR
+     A[Data Sources] --> B(Security Hub)
+     B --> C[Analysis]
+     C --> D[Automated Actions]
+     ```  
+
 ---
 
 ## Current Supported Security Standards (As of 2025)
