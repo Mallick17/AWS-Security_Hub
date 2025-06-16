@@ -45,7 +45,7 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 - It aims to detect when your AWS accounts and deployed resources deviate from security best practices, offering prescriptive guidance to improve and maintain your security posture.
 - This standard covers AWS’s most popular and foundational services, ensuring a broad scope of security checks.
 - The **AWS Foundational Security Best Practices** standard is a curated set of **automated checks** that enforce **AWS-recommended configurations** for key AWS services like:
-* S3, IAM, EC2, RDS, Lambda, CloudTrail, etc.
+  - 43 S3, IAM, EC2, RDS, Lambda, CloudTrail, etc.
 
 ### Why It Is Used:
 * To ensure your **AWS configurations follow security best practices** as defined by AWS security engineers.
