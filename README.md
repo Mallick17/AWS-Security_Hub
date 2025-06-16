@@ -52,14 +52,13 @@ The **AWS Foundational Security Best Practices** standard is a curated set of **
 * Helps teams **reduce the attack surface** in day-to-day deployments.
 
 ### 🧪 What It Checks:
-
-* IAM users with active access keys older than 90 days
-* Public S3 buckets
-* Unencrypted EBS volumes
-* VPCs with open security groups (0.0.0.0/0)
-* CloudTrail not enabled
-* Unrestricted Lambda permissions
-* RDS instances without backups
+- FSBP includes a wide range of controls, each checking a specific aspect of your AWS setup. Here are some examples:
+  - Account.1: Ensures security contact information is provided for an AWS account, so AWS can notify you in case of security issues.
+  - ACM.1: Checks if imported and ACM-issued certificates are renewed after a specified time period, ensuring secure communication.
+  - APIGateway.1: Verifies that API Gateway REST and WebSocket API execution logging is enabled, important for monitoring and auditing.
+  - AutoScaling.2: Ensures Auto Scaling groups are spread across multiple Availability Zones, improving reliability and security.
+  - CloudFront.1: Checks if CloudFront distributions have a default root object configured, preventing misconfigurations.
+  - RDS.1: Ensures Amazon RDS databases are encrypted at rest, protecting data even when not in use. RDS instances without backups.
 
 ### 📍 Where It Is Used:
 
@@ -85,14 +84,13 @@ The **Center for Internet Security (CIS)** Benchmark is an **independent** secur
 * Frequently used by organizations preparing for **audits or external certifications**
 
 ### 🧪 What It Checks:
-
-* Root account not used
-* MFA enabled for root user
-* IAM policies follow least privilege
-* IAM password policies have minimum strength
-* Security groups not open to 0.0.0.0/0
-* CloudTrail and Config enabled
-* S3 buckets logging and encryption enabled
+- The CIS Benchmark includes controls that focus on key security areas. Examples include:
+  - Avoid the use of the "root" account: Ensures you don’t use the root account for daily tasks, as it has full access and poses a high risk if compromised.
+  - Ensure credentials unused for 90 days or more are disabled: Prevents old, unused accounts from being exploited, enhancing security.
+  - Ensure IAM password policy requires a minimum length of 14 or greater: Enforces strong passwords, making them harder to guess or crack.
+  - Ensure MFA is enabled for the "root" account: Adds an extra layer of security by requiring a second authentication factor.
+  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22: Prevents public access to SSH, reducing the risk of unauthorized access to EC2 instances.
+  - Ensure rotation for customer-created KMS keys is enabled: Ensures encryption keys are rotated regularly, improving security for encrypted data.
 
 ### 📍 Where It Is Used:
 
