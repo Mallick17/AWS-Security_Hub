@@ -12,7 +12,7 @@ AWS **Security Hub** is a **cloud security posture management (CSPM)** service t
 
 ---
 
-## 📌 What Are Security Standards in Security Hub?
+## What Are Security Standards in Security Hub?
 
 Security standards in AWS Security Hub are **automated compliance frameworks** that consist of **security controls** (automated checks) designed to enforce **best practices** in cloud security. Each **enabled standard** will:
 
@@ -23,7 +23,7 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 
 ---
 
-## ✅ Current Supported Security Standards (As of 2025)
+## Current Supported Security Standards (As of 2025)
 
 | Security Standard                                   | Type       | Purpose                                                                                               | Defined By                         |
 | --------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------- |
@@ -192,12 +192,12 @@ The **NIST CSF** is a voluntary framework made up of **standards, guidelines, an
 
 * You can **enable one or more standards per account or per Region**.
 * Security Hub **evaluates controls automatically** on a scheduled basis (usually every 12–24 hours).
+* The **security score** reflects how compliant your account is with the standard.
 * Failed checks become **findings**, which:
 
   * Contribute to your **security score**.
   * Can be remediated manually or automatically.
   * Can be exported to **SIEM, ticketing**, or **remediation pipelines**.
-
 
 ---
 
@@ -245,25 +245,6 @@ The **NIST CSF** is a voluntary framework made up of **standards, guidelines, an
     * AWS Lambda functions
     * SSM OpsItems
     * Incident management workflows
-
----
-
-## 📚 Supported Security Standards
-
-Security Hub supports **multiple security frameworks**, each with its own set of controls:
-
-| Standard Name                                       | Description                                                                                  |
-| --------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| **AWS Foundational Security Best Practices (FSBP)** | AWS-created standard with best practices for securing AWS services.                          |
-| **CIS AWS Foundations Benchmark**                   | Developed by the Center for Internet Security; focuses on secure AWS configuration.          |
-| **PCI DSS**                                         | Ensures compliance with Payment Card Industry standards for handling credit card data.       |
-| **NIST CSF**                                        | Aligns with the U.S. National Institute of Standards and Technology Cybersecurity Framework. |
-
-When a standard is **enabled**:
-
-* Its **controls are evaluated automatically**.
-* **Failed controls generate findings**, visible in the Security Hub console.
-* The **security score** reflects how compliant your account is with the standard.
 
 ---
 
