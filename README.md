@@ -38,7 +38,7 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 <details>
  <summary>1. AWS Foundational Security Best Practices (FSBP)</summary>
 
-## 1️⃣ AWS Foundational Security Best Practices (FSBP)
+## 1. AWS Foundational Security Best Practices (FSBP)
 
 ### Description and Purpose:
 - FSBP is a compilation of security best practices developed by AWS and industry professionals, suitable for organizations of all sectors and sizes.
@@ -51,7 +51,7 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 * To ensure your **AWS configurations follow security best practices** as defined by AWS security engineers. FSBP is essential for establishing a strong security foundation in AWS. It helps prevent common **misconfigurations and vulnerabilities**
 * Helps teams **reduce the attack surface** in day-to-day deployments. By following FSBP, you can align your environment with AWS-recommended practices, reducing the risk of security breaches.
 
-### 🧪 What It Checks:
+### What It Checks:
 - FSBP includes a wide range of controls, each checking a specific aspect of your AWS setup. Here are some examples:
   - _**Account.1:**_ Ensures security contact information is provided for an AWS account, so AWS can notify you in case of security issues.
   - _**ACM.1:**_ Checks if imported and ACM-issued certificates are renewed after a specified time period, ensuring secure communication.
@@ -60,7 +60,7 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
   - **_CloudFront.1:_** Checks if CloudFront distributions have a default root object configured, preventing misconfigurations.
   - **_RDS.1:_** Ensures Amazon RDS databases are encrypted at rest, protecting data even when not in use. RDS instances without backups.
 
-### 📍 Where It Is Used:
+### Where It Is Used:
 
 * All production, staging, and dev environments in AWS
 * Used by **organizations of any size** looking to harden their AWS deployments
@@ -76,18 +76,17 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 <details>
  <summary>2. CIS AWS Foundations Benchmark</summary>
 
-## 2️⃣ CIS AWS Foundations Benchmark
+## 2. CIS AWS Foundations Benchmark
 
 ### Description and Purpose:
 The **Center for Internet Security (CIS)** Benchmark is an **independent** security framework specifically tailored to **AWS infrastructure**. Security Hub supports the **Level 1 controls** from this benchmark.
 - This standard automatically checks for your compliance readiness against a subset of CIS requirements, ensuring your environment meets widely accepted security practices.
 
-### 🧠 Why It Is Used:
-
+### Why It Is Used:
 * To validate your AWS configuration aligns with **independent industry-standard benchmarks**, CIS benchmarks are often required for compliance with industry regulations and standards, making this standard crucial for organizations needing to demonstrate security alignment.
 * Frequently used by organizations preparing for **audits or external certifications**, It’s particularly useful for businesses in regulated industries, helping them meet external compliance requirements.
 
-### 🧪 What It Checks:
+### What It Checks:
 - The CIS Benchmark includes controls that focus on key security areas. Examples include:
   - **_Avoid the use of the "root" account:_** Ensures you don’t use the root account for daily tasks, as it has full access and poses a high risk if compromised.
   - **_Ensure credentials unused for 90 days or more are disabled:_** Prevents old, unused accounts from being exploited, enhancing security.
@@ -96,7 +95,7 @@ The **Center for Internet Security (CIS)** Benchmark is an **independent** secur
   - **_Ensure no security groups allow ingress from 0.0.0.0/0 to port 22_**: Prevents public access to SSH, reducing the risk of unauthorized access to EC2 instances.
   - **_Ensure rotation for customer-created KMS keys is enabled:_** Ensures encryption keys are rotated regularly, improving security for encrypted data.
 
-### 📍 Where It Is Used:
+### Where It Is Used:
 
 * Organizations undergoing **internal or third-party security audits**
 * Companies following **compliance-driven development** models
@@ -112,19 +111,23 @@ The **Center for Internet Security (CIS)** Benchmark is an **independent** secur
 <details>
  <summary>3. PCI DSS v3.2.1</summary>
 
-## 3️⃣ PCI DSS v3.2.1
+## 3. PCI DSS v3.2.1
 
-### 📖 What It Is:
-
+### Description and Purpose:
 The **Payment Card Industry Data Security Standard (PCI DSS)** is a global compliance standard for **handling credit card data**. Security Hub maps AWS checks to portions of this standard.
+- PCI DSS is a set of security standards specifically designed for businesses that handle credit card information, including accepting, processing, storing, or transmitting credit card data.
+- This standard ensures compliance with requirements to protect cardholders’ data, crucial for avoiding fines, legal issues, and loss of customer trust.
 
-### 🧠 Why It Is Used:
+### Why It Is Used:
+* To maintain **PCI compliance** for organizations dealing with cardholder data, For organizations processing credit card payments, PCI DSS compliance is mandatory. Non-compliance can lead to significant penalties and reputational damage.
+* To ensure customer financial information is **protected and secured**, Security Hub’s automated checks help simplify compliance.
 
-* To maintain **PCI compliance** for organizations dealing with cardholder data
-* To ensure customer financial information is **protected and secured**
-
-### 🧪 What It Checks:
-
+### What It Checks:
+- While the exact controls aren’t detailed in the provided information, PCI DSS generally includes checks such as:
+  - Ensuring credit card data is encrypted when stored, protecting it from unauthorized access.
+  - Verifying that systems transmitting credit card data use secure protocols, like HTTPS, to prevent data interception.
+  - Checking that access to credit card data is restricted to authorized personnel only, reducing the risk of internal breaches.
+  - Regularly testing security systems and processes to ensure they’re effective and up to date.
 * Encrypted storage of sensitive data
 * Segmentation of public/private networks
 * IAM access controls for cardholder data
@@ -132,11 +135,14 @@ The **Payment Card Industry Data Security Standard (PCI DSS)** is a global compl
 * Secure transmission (TLS)
 * Key management and rotation policies
 
-### 📍 Where It Is Used:
-
+### Where It Is Used:
 * **E-commerce platforms**
 * SaaS providers that handle **online payments**
 * Fintech or POS solution vendors
+
+### How It Works in Security Hub:
+- Enabling PCI DSS in Security Hub runs automated checks against these requirements, generating findings for any non-compliance. For example, if a database storing credit card information isn’t encrypted, Security Hub will alert you to encrypt it.
+- The security score for PCI DSS helps you monitor your compliance status, ensuring you meet the standards needed for credit card processing.
 
 </details>
 
