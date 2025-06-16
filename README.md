@@ -35,6 +35,9 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 
 ---
 
+<details>
+ <summary>Detailed Explaination of 1. AWS Foundational Security Best Practices (FSBP)</summary>
+
 ## 1️⃣ AWS Foundational Security Best Practices (FSBP)
 
 ### 📖 What It Is:
@@ -63,7 +66,12 @@ The **AWS Foundational Security Best Practices** standard is a curated set of **
 * All production, staging, and dev environments in AWS
 * Used by **organizations of any size** looking to harden their AWS deployments
 
+</details>
+
 ---
+
+<details>
+ <summary>Detailed Explaination of 2. CIS AWS Foundations Benchmark</summary>
 
 ## 2️⃣ CIS AWS Foundations Benchmark
 
@@ -91,7 +99,12 @@ The **Center for Internet Security (CIS)** Benchmark is an **independent** secur
 * Organizations undergoing **internal or third-party security audits**
 * Companies following **compliance-driven development** models
 
+</details>
+
 ---
+
+<details>
+ <summary>Detailed Explaination of 3. PCI DSS v3.2.1</summary>
 
 ## 3️⃣ PCI DSS v3.2.1
 
@@ -119,8 +132,13 @@ The **Payment Card Industry Data Security Standard (PCI DSS)** is a global compl
 * SaaS providers that handle **online payments**
 * Fintech or POS solution vendors
 
+</details>
+
 ---
 
+<details>
+ <summary>Detailed Explaination of 4. NIST SP 800-53 Rev 5</summary>
+ 
 ## 4️⃣ NIST SP 800-53 Rev 5
 
 ### 📖 What It Is:
@@ -147,7 +165,12 @@ The **National Institute of Standards and Technology (NIST) SP 800-53** is a cat
 * Federal cloud systems
 * Heavily regulated industries (e.g., healthcare, defense)
 
+</details>
+
 ---
+
+<details>
+ <summary>Detailed Explaination of 5. NIST Cybersecurity Framework (CSF)</summary>
 
 ## 5️⃣ NIST Cybersecurity Framework (CSF)
 
@@ -173,6 +196,8 @@ The **NIST CSF** is a voluntary framework made up of **standards, guidelines, an
 * Private sector companies aiming to **modernize security**
 * Industries such as banking, healthcare, utilities
 * Organizations mapping to **ISO 27001**, **SOC 2**, or **COBIT**
+
+</details>
 
 ---
 
