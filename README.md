@@ -36,7 +36,7 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 ---
 
 <details>
- <summary>Detailed Explaination of 1. AWS Foundational Security Best Practices (FSBP)</summary>
+ <summary>1. AWS Foundational Security Best Practices (FSBP)</summary>
 
 ## 1️⃣ AWS Foundational Security Best Practices (FSBP)
 
@@ -71,7 +71,7 @@ The **AWS Foundational Security Best Practices** standard is a curated set of **
 
 
 <details>
- <summary>Detailed Explaination of 2. CIS AWS Foundations Benchmark</summary>
+ <summary>2. CIS AWS Foundations Benchmark</summary>
 
 ## 2️⃣ CIS AWS Foundations Benchmark
 
@@ -104,7 +104,7 @@ The **Center for Internet Security (CIS)** Benchmark is an **independent** secur
 
 
 <details>
- <summary>Detailed Explaination of 3. PCI DSS v3.2.1</summary>
+ <summary>3. PCI DSS v3.2.1</summary>
 
 ## 3️⃣ PCI DSS v3.2.1
 
@@ -137,7 +137,7 @@ The **Payment Card Industry Data Security Standard (PCI DSS)** is a global compl
 
 
 <details>
- <summary>Detailed Explaination of 4. NIST SP 800-53 Rev 5</summary>
+ <summary>4. NIST SP 800-53 Rev 5</summary>
  
 ## 4️⃣ NIST SP 800-53 Rev 5
 
@@ -170,7 +170,7 @@ The **National Institute of Standards and Technology (NIST) SP 800-53** is a cat
 
 
 <details>
- <summary>Detailed Explaination of 5. NIST Cybersecurity Framework (CSF)</summary>
+ <summary>5. NIST Cybersecurity Framework (CSF)</summary>
 
 ## 5️⃣ NIST Cybersecurity Framework (CSF)
 
