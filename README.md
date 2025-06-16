@@ -40,16 +40,20 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 
 ## 1️⃣ AWS Foundational Security Best Practices (FSBP)
 
-### 📖 What It Is:
-
-The **AWS Foundational Security Best Practices** standard is a curated set of **automated checks** that enforce **AWS-recommended configurations** for key AWS services like:
-
+### Description and Purpose:
+- FSBP is a compilation of security best practices developed by AWS and industry professionals, suitable for organizations of all sectors and sizes.
+- It aims to detect when your AWS accounts and deployed resources deviate from security best practices, offering prescriptive guidance to improve and maintain your security posture.
+- This standard covers AWS’s most popular and foundational services, ensuring a broad scope of security checks.
+- The **AWS Foundational Security Best Practices** standard is a curated set of **automated checks** that enforce **AWS-recommended configurations** for key AWS services like:
 * S3, IAM, EC2, RDS, Lambda, CloudTrail, etc.
 
-### 🧠 Why It Is Used:
-
+### Why It Is Used:
 * To ensure your **AWS configurations follow security best practices** as defined by AWS security engineers.
 * Helps teams **reduce the attack surface** in day-to-day deployments.
+
+### Importance:
+- FSBP is essential for establishing a strong security foundation in AWS. It helps prevent common misconfigurations and vulnerabilities, making it a great starting point for beginners.
+- By following FSBP, you can align your environment with AWS-recommended practices, reducing the risk of security breaches.
 
 ### 🧪 What It Checks:
 - FSBP includes a wide range of controls, each checking a specific aspect of your AWS setup. Here are some examples:
