@@ -23,17 +23,17 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 
 ---
 
-## Current Supported Security Standards (As of 2025)
+## Overview of Current Supported Security Standards (As of 2025)
 
-| Security Standard                                   | Type       | Purpose                                                                                               | Defined By                         |
-| --------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| **AWS Foundational Security Best Practices (FSBP)** | AWS native | Secure core AWS services and accounts                                                                 | AWS Security Experts               |
-| **CIS AWS Foundations Benchmark**                   | External   | Enforce cloud infrastructure hygiene and secure configurations                                        | Center for Internet Security (CIS) |
-| **PCI DSS v3.2.1**                                  | Compliance | Secure credit card data for companies accepting, processing, storing, or transmitting cardholder data | PCI Security Standards Council     |
-| **NIST SP 800-53 Rev 5**                            | Government | Framework for securing information systems used by U.S. federal agencies                              | NIST (U.S. Gov)                    |
-| **NIST Cybersecurity Framework (CSF)**              | Government | Risk-based framework for organizations to manage and reduce cybersecurity risk                        | NIST                               |
+| Security Standard                                   | Type       | Managed/Defined By                 | Purpose                                                                                               | Coverage                           | Compliance Scope                       | Ideal For                                 |
+| --------------------------------------------------- | ---------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------- | -------------------------------------- | ----------------------------------------- |
+| **AWS Foundational Security Best Practices (FSBP)** | AWS native | AWS Security Experts               | Secure core AWS services and accounts                                                                 | 50+ AWS services                   | AWS-native security hardening          | All AWS users                             |
+| **CIS AWS Foundations Benchmark**                   | External   | Center for Internet Security (CIS) | Enforce cloud infrastructure hygiene and secure configurations                                        | Basic AWS setup                    | General best practices                 | Audit-readiness                           |
+| **PCI DSS v3.2.1**                                  | Compliance | PCI Security Standards Council     | Secure credit card data for companies accepting, processing, storing, or transmitting cardholder data | Payment-related services           | Required for credit card data handling | E-commerce, fintech                       |
+| **NIST SP 800-53 Rev 5**                            | Government | NIST (U.S. Gov)                    | Framework for securing information systems used by U.S. federal agencies                              | Broad controls for federal systems | U.S. federal standards                 | Gov contractors, compliance-heavy sectors |
+| **NIST Cybersecurity Framework (CSF)**              | Government | NIST                               | Risk-based framework for organizations to manage and reduce cybersecurity risk                        | Framework-driven                   | Customizable                           | Organizations building custom programs    |
 
----
+
 
 <details>
  <summary>1. AWS Foundational Security Best Practices (FSBP)</summary>
@@ -210,18 +210,6 @@ The **NIST CSF** is a voluntary framework made up of **standards, guidelines, an
 * Organizations mapping to **ISO 27001**, **SOC 2**, or **COBIT**
 
 </details>
-
----
-
-## 📊 Comparison Table of Security Standards
-
-| Standard        | Managed By  | Purpose                              | Coverage                           | Compliance Scope                       | Ideal For                                 |
-| --------------- | ----------- | ------------------------------------ | ---------------------------------- | -------------------------------------- | ----------------------------------------- |
-| **FSBP**        | AWS         | Secure AWS resource configurations   | 50+ AWS services                   | AWS-native security hardening          | All AWS users                             |
-| **CIS**         | CIS         | Harden cloud accounts and IAM access | Basic AWS setup                    | General best practices                 | Audit-readiness                           |
-| **PCI DSS**     | PCI Council | Protect cardholder data              | Payment-related services           | Required for credit card data handling | E-commerce, fintech                       |
-| **NIST 800-53** | NIST        | Align with U.S. government controls  | Broad controls for federal systems | U.S. federal standards                 | Gov contractors, compliance-heavy sectors |
-| **NIST CSF**    | NIST        | Risk-based cybersecurity program     | Framework-driven                   | Customizable                           | Organizations building custom programs    |
 
 ---
 
