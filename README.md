@@ -9,7 +9,196 @@ AWS **Security Hub** is a **cloud security posture management (CSPM)** service t
 
 ### [Key Concepts - Refer the Documentation For Now](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-concepts.html) 
 - Detailed explain on the way to be prepared.
- 
+
+---
+
+## 📌 What Are Security Standards in Security Hub?
+
+Security standards in AWS Security Hub are **automated compliance frameworks** that consist of **security controls** (automated checks) designed to enforce **best practices** in cloud security. Each **enabled standard** will:
+
+* Continuously **evaluate your AWS account and resources**,
+* Generate **control findings** if a check fails,
+* Help you assess and maintain **security compliance**,
+* Provide **security scores** to measure posture across accounts.
+
+---
+
+## ✅ Current Supported Security Standards (As of 2025)
+
+| Security Standard                                   | Type       | Purpose                                                                                               | Defined By                         |
+| --------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| **AWS Foundational Security Best Practices (FSBP)** | AWS native | Secure core AWS services and accounts                                                                 | AWS Security Experts               |
+| **CIS AWS Foundations Benchmark**                   | External   | Enforce cloud infrastructure hygiene and secure configurations                                        | Center for Internet Security (CIS) |
+| **PCI DSS v3.2.1**                                  | Compliance | Secure credit card data for companies accepting, processing, storing, or transmitting cardholder data | PCI Security Standards Council     |
+| **NIST SP 800-53 Rev 5**                            | Government | Framework for securing information systems used by U.S. federal agencies                              | NIST (U.S. Gov)                    |
+| **NIST Cybersecurity Framework (CSF)**              | Government | Risk-based framework for organizations to manage and reduce cybersecurity risk                        | NIST                               |
+
+---
+
+## 1️⃣ AWS Foundational Security Best Practices (FSBP)
+
+### 📖 What It Is:
+
+The **AWS Foundational Security Best Practices** standard is a curated set of **automated checks** that enforce **AWS-recommended configurations** for key AWS services like:
+
+* S3, IAM, EC2, RDS, Lambda, CloudTrail, etc.
+
+### 🧠 Why It Is Used:
+
+* To ensure your **AWS configurations follow security best practices** as defined by AWS security engineers.
+* Helps teams **reduce the attack surface** in day-to-day deployments.
+
+### 🧪 What It Checks:
+
+* IAM users with active access keys older than 90 days
+* Public S3 buckets
+* Unencrypted EBS volumes
+* VPCs with open security groups (0.0.0.0/0)
+* CloudTrail not enabled
+* Unrestricted Lambda permissions
+* RDS instances without backups
+
+### 📍 Where It Is Used:
+
+* All production, staging, and dev environments in AWS
+* Used by **organizations of any size** looking to harden their AWS deployments
+
+---
+
+## 2️⃣ CIS AWS Foundations Benchmark
+
+### 📖 What It Is:
+
+The **Center for Internet Security (CIS)** Benchmark is an **independent** security framework specifically tailored to **AWS infrastructure**. Security Hub supports the **Level 1 controls** from this benchmark.
+
+### 🧠 Why It Is Used:
+
+* To validate your AWS configuration aligns with **independent industry-standard benchmarks**
+* Frequently used by organizations preparing for **audits or external certifications**
+
+### 🧪 What It Checks:
+
+* Root account not used
+* MFA enabled for root user
+* IAM policies follow least privilege
+* IAM password policies have minimum strength
+* Security groups not open to 0.0.0.0/0
+* CloudTrail and Config enabled
+* S3 buckets logging and encryption enabled
+
+### 📍 Where It Is Used:
+
+* Organizations undergoing **internal or third-party security audits**
+* Companies following **compliance-driven development** models
+
+---
+
+## 3️⃣ PCI DSS v3.2.1
+
+### 📖 What It Is:
+
+The **Payment Card Industry Data Security Standard (PCI DSS)** is a global compliance standard for **handling credit card data**. Security Hub maps AWS checks to portions of this standard.
+
+### 🧠 Why It Is Used:
+
+* To maintain **PCI compliance** for organizations dealing with cardholder data
+* To ensure customer financial information is **protected and secured**
+
+### 🧪 What It Checks:
+
+* Encrypted storage of sensitive data
+* Segmentation of public/private networks
+* IAM access controls for cardholder data
+* Logging and monitoring of data access
+* Secure transmission (TLS)
+* Key management and rotation policies
+
+### 📍 Where It Is Used:
+
+* **E-commerce platforms**
+* SaaS providers that handle **online payments**
+* Fintech or POS solution vendors
+
+---
+
+## 4️⃣ NIST SP 800-53 Rev 5
+
+### 📖 What It Is:
+
+The **National Institute of Standards and Technology (NIST) SP 800-53** is a catalog of **security and privacy controls** used by U.S. federal agencies and contractors.
+
+### 🧠 Why It Is Used:
+
+* To align your cloud workloads with **U.S. government cybersecurity guidelines**
+* Mandatory for **federal cloud deployments** (FedRAMP, FISMA compliance)
+
+### 🧪 What It Checks:
+
+* Security control baselines (low, moderate, high impact)
+* Resource tagging for tracking and auditing
+* Audit logging and access controls
+* Contingency planning
+* Encryption at rest and in transit
+* Incident response mechanisms
+
+### 📍 Where It Is Used:
+
+* Government contractors
+* Federal cloud systems
+* Heavily regulated industries (e.g., healthcare, defense)
+
+---
+
+## 5️⃣ NIST Cybersecurity Framework (CSF)
+
+### 📖 What It Is:
+
+The **NIST CSF** is a voluntary framework made up of **standards, guidelines, and best practices** to manage and reduce cybersecurity risk.
+
+### 🧠 Why It Is Used:
+
+* Helps organizations build and improve **cybersecurity programs**
+* Aligns with business drivers and compliance mandates
+
+### 📁 Framework Functions:
+
+1. **Identify** – Asset and risk management
+2. **Protect** – Access control and data security
+3. **Detect** – Anomalies and events
+4. **Respond** – Incident response
+5. **Recover** – Recovery planning
+
+### 📍 Where It Is Used:
+
+* Private sector companies aiming to **modernize security**
+* Industries such as banking, healthcare, utilities
+* Organizations mapping to **ISO 27001**, **SOC 2**, or **COBIT**
+
+---
+
+## 📊 Comparison Table of Security Standards
+
+| Standard        | Managed By  | Purpose                              | Coverage                           | Compliance Scope                       | Ideal For                                 |
+| --------------- | ----------- | ------------------------------------ | ---------------------------------- | -------------------------------------- | ----------------------------------------- |
+| **FSBP**        | AWS         | Secure AWS resource configurations   | 50+ AWS services                   | AWS-native security hardening          | All AWS users                             |
+| **CIS**         | CIS         | Harden cloud accounts and IAM access | Basic AWS setup                    | General best practices                 | Audit-readiness                           |
+| **PCI DSS**     | PCI Council | Protect cardholder data              | Payment-related services           | Required for credit card data handling | E-commerce, fintech                       |
+| **NIST 800-53** | NIST        | Align with U.S. government controls  | Broad controls for federal systems | U.S. federal standards                 | Gov contractors, compliance-heavy sectors |
+| **NIST CSF**    | NIST        | Risk-based cybersecurity program     | Framework-driven                   | Customizable                           | Organizations building custom programs    |
+
+---
+
+## 🧠 Bonus: How Security Hub Uses These Standards
+
+* You can **enable one or more standards per account or per Region**.
+* Security Hub **evaluates controls automatically** on a scheduled basis (usually every 12–24 hours).
+* Failed checks become **findings**, which:
+
+  * Contribute to your **security score**.
+  * Can be remediated manually or automatically.
+  * Can be exported to **SIEM, ticketing**, or **remediation pipelines**.
+
+
 ---
 
 ## 🛠 How AWS Security Hub Works
