@@ -48,12 +48,8 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
   - S3, IAM, EC2, RDS, Lambda, CloudTrail, etc.
 
 ### Why It Is Used:
-* To ensure your **AWS configurations follow security best practices** as defined by AWS security engineers.
-* Helps teams **reduce the attack surface** in day-to-day deployments.
-
-### Importance:
-- FSBP is essential for establishing a strong security foundation in AWS. It helps prevent common misconfigurations and vulnerabilities, making it a great starting point for beginners.
-- By following FSBP, you can align your environment with AWS-recommended practices, reducing the risk of security breaches.
+* To ensure your **AWS configurations follow security best practices** as defined by AWS security engineers. FSBP is essential for establishing a strong security foundation in AWS. It helps prevent common **misconfigurations and vulnerabilities**
+* Helps teams **reduce the attack surface** in day-to-day deployments. By following FSBP, you can align your environment with AWS-recommended practices, reducing the risk of security breaches.
 
 ### 🧪 What It Checks:
 - FSBP includes a wide range of controls, each checking a specific aspect of your AWS setup. Here are some examples:
@@ -69,6 +65,10 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 * All production, staging, and dev environments in AWS
 * Used by **organizations of any size** looking to harden their AWS deployments
 
+### How It Works in Security Hub:
+- When enabled, FSBP runs continuous and automated account and resource-level configuration checks. It generates findings if any control fails, helping you identify and remediate issues promptly.
+- The security score for FSBP reflects your overall compliance, making it easy to track improvements over time.
+
 </details>
 
 
@@ -78,14 +78,14 @@ Security standards in AWS Security Hub are **automated compliance frameworks** t
 
 ## 2️⃣ CIS AWS Foundations Benchmark
 
-### 📖 What It Is:
-
+### Description and Purpose:
 The **Center for Internet Security (CIS)** Benchmark is an **independent** security framework specifically tailored to **AWS infrastructure**. Security Hub supports the **Level 1 controls** from this benchmark.
+- This standard automatically checks for your compliance readiness against a subset of CIS requirements, ensuring your environment meets widely accepted security practices.
 
 ### 🧠 Why It Is Used:
 
-* To validate your AWS configuration aligns with **independent industry-standard benchmarks**
-* Frequently used by organizations preparing for **audits or external certifications**
+* To validate your AWS configuration aligns with **independent industry-standard benchmarks**, CIS benchmarks are often required for compliance with industry regulations and standards, making this standard crucial for organizations needing to demonstrate security alignment.
+* Frequently used by organizations preparing for **audits or external certifications**, It’s particularly useful for businesses in regulated industries, helping them meet external compliance requirements.
 
 ### 🧪 What It Checks:
 - The CIS Benchmark includes controls that focus on key security areas. Examples include:
@@ -100,6 +100,10 @@ The **Center for Internet Security (CIS)** Benchmark is an **independent** secur
 
 * Organizations undergoing **internal or third-party security audits**
 * Companies following **compliance-driven development** models
+
+### How It Works in Security Hub:
+- When enabled, Security Hub runs automated checks against these CIS controls, generating findings for any non-compliance. You can review these findings in the Security Hub console, filter by severity, and take corrective actions.
+- The security score for this standard helps you track your compliance with CIS guidelines, making it easier to prioritize remediation efforts.
 
 </details>
 
