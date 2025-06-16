@@ -224,13 +224,6 @@ The **NIST CSF** is a voluntary framework made up of **standards, guidelines, an
   * Can be remediated manually or automatically.
   * Can be exported to **SIEM, ticketing**, or **remediation pipelines**.
 
-     ```mermaid
-     graph LR
-     A[Data Sources] --> B(Security Hub)
-     B --> C[Analysis]
-     C --> D[Automated Actions]
-     ```  
-
 ---
 
 ## 🛠 How AWS Security Hub Works
@@ -337,6 +330,13 @@ Security Hub integrates with many AWS services, either by **receiving** or **for
 
 * Use **Automation Rules** or **EventBridge Rules**
 * Example: If an S3 bucket is public, auto-remediate using Lambda
+
+    ```mermaid
+     graph LR
+     A[Data Sources] --> B(Security Hub)
+     B --> C[Analysis]
+     C --> D[Automated Actions]
+     ```  
 
 ---
 
