@@ -60,6 +60,9 @@ GuardDuty continuously analyzes **tens of billions of events per minute** from A
 ## **Features**
 Amazon GuardDuty is a smart threat detection service designed to monitor and protect your AWS environment. It uses machine learning, threat intelligence, and behavior analysis to identify security threats in real time.
 
+<details>
+ <summary>Click to view Features with Example</summary>
+
 ### 1. **Continuous Monitoring of Foundational Data Sources**
 GuardDuty automatically monitors three main AWS data sources:
 
@@ -369,6 +372,8 @@ Generate test finding:
 ```bash
 aws guardduty create-sample-findings --detector-id <your-detector-id>
 ```
+
+</details>
 
 </details>
 
