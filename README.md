@@ -1,11 +1,23 @@
 # **Amazon GuardDuty – Threat Detection for AWS**
 ## Overview
-Amazon GuardDuty is a **managed threat detection service** that helps protect your AWS accounts, workloads, and data. It provides **intelligent security monitoring** using **machine learning**, **anomaly detection**, and **threat intelligence**—with **minimal setup** and **no infrastructure to manage**.
-
+Amazon GuardDuty is a **managed threat detection service** that helps protect your AWS accounts, workloads, and data. 
 - **_Technologies Behind GuardDuty_**
   - **Machine Learning (ML)** to identify anomalies.
   - **Threat Intelligence Feeds** from AWS and partners (e.g., malicious IPs/domains, malware hashes).
   - **Contextual Analysis** for understanding threats in real time.
+
+- **Amazon GuardDuty** is a managed threat detection service that continuously monitors for malicious activity and unauthorized behavior. It uses multiple foundational data sources:
+* AWS CloudTrail management events
+* Amazon VPC Flow Logs
+* Amazon Route 53 DNS query logs
+
+- GuardDuty can also monitor additional optional data sources (called protection types) such as:
+* Amazon S3 data events
+* EKS audit logs
+* RDS login activity
+* Lambda network logs
+* Runtime Monitoring (for EC2, ECS, EKS)
+* EBS volumes (Malware scan)
 
 - **Easy to Use**
   - **One-click activation** — No need for complex setup or agents.
@@ -371,8 +383,206 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 ---
 
 ## Getting Started
+# Amazon GuardDuty Hands-On Documentation
 
-1. Go to the **Amazon GuardDuty console**.
-2. Click **"Enable GuardDuty"** for your account.
-3. (Optional) Integrate with AWS Organizations to monitor multiple accounts.
+---
+
+## Before You Begin
+
+
+
+### Key Notes:
+
+* GuardDuty is a **Regional service** — it must be enabled in every AWS Region you wish to monitor.
+* It is recommended to enable GuardDuty in **all supported Regions**, including those you don’t actively use, for broader detection.
+* A 30-day free trial is available for newly enabled protection features in each Region.
+* GuardDuty automatically creates service-linked IAM roles such as:
+
+  * `AWSServiceRoleForAmazonGuardDuty`
+  * `AWSServiceRoleForAmazonGuardDutyMalwareProtection`
+
+---
+
+## Step 1: Enable Amazon GuardDuty
+
+### Standalone Account
+
+1. Open GuardDuty console: [https://console.aws.amazon.com/guardduty](https://console.aws.amazon.com/guardduty)
+2. Choose **Amazon GuardDuty - All features**.
+3. Click **Get Started** > **Enable GuardDuty**.
+
+### Multi-Account via AWS Organizations
+
+* Designate an administrator account.
+* Add and enable member accounts.
+
+---
+
+## Step 2: Generate Sample Findings
+
+1. In the GuardDuty console, go to **Settings**.
+2. Under **Sample findings**, choose **Generate sample findings**.
+3. View results in:
+
+   * **Summary** dashboard
+   * **Findings** page (Sample findings will be prefixed with `[SAMPLE]`).
+4. Click any finding to:
+
+   * View JSON structure
+   * Examine affected resources
+   * Apply filters
+
+To archive:
+
+* Select all findings > **Actions** > **Archive**.
+* Switch between **Current** and **Archived** view as needed.
+
+---
+
+## Step 3: Export Findings to Amazon S3
+
+Exporting allows you to retain findings beyond the default 90-day retention using encrypted storage in Amazon S3.
+
+### Step-by-Step:
+
+#### 1. Create or Choose a KMS Key
+
+* Go to AWS KMS Console: [https://console.aws.amazon.com/kms](https://console.aws.amazon.com/kms)
+* Select or create a symmetric key
+* Copy the **Key ARN**
+* Edit the key policy to allow GuardDuty access:
+
+```json
+{
+  "Sid": "AllowGuardDutyKey",
+  "Effect": "Allow",
+  "Principal": {
+    "Service": "guardduty.amazonaws.com"
+  },
+  "Action": "kms:GenerateDataKey",
+  "Resource": "KMS key ARN",
+  "Condition": {
+    "StringEquals": {
+      "aws:SourceAccount": "123456789012",
+      "aws:SourceArn": "arn:aws:guardduty:Region:123456789012:detector/SourceDetectorID"
+    }
+  }
+}
+```
+
+#### 2. Create or Edit S3 Bucket Policy
+
+* Go to Amazon S3 > Your Bucket > **Permissions** > **Bucket Policy**
+* Add policy to allow GuardDuty access (replace placeholders):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Allow PutObject",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "guardduty.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "bucket-arn/path/*",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "123456789012",
+          "aws:SourceArn": "arn:aws:guardduty:region:123456789012:detector/detectorID"
+        }
+      }
+    }
+  ]
+}
+```
+
+#### 3. Configure in GuardDuty
+
+* Console > GuardDuty > Settings
+* Choose **Configure S3 Export**
+* Enter:
+
+  * S3 Bucket ARN
+  * KMS Key ARN
+* Click **Save**
+
+---
+
+## Step 4: Configure SNS Alert for GuardDuty Findings
+
+### Create SNS Topic
+
+1. Open [Amazon SNS Console](https://console.aws.amazon.com/sns)
+2. Go to **Topics** > **Create Topic** > Type: **Standard**
+3. Name: `GuardDuty`
+4. Click **Create Topic**
+5. Create Subscription:
+
+   * Protocol: **Email**
+   * Enter your email
+   * Confirm via email
+
+### Create EventBridge Rule
+
+1. Open [Amazon EventBridge Console](https://console.aws.amazon.com/events)
+2. Go to **Rules** > **Create Rule**
+3. Name your rule
+4. Source: **AWS Services** > Service: **GuardDuty**
+5. Event Type: **GuardDuty Finding**
+6. Target: **SNS topic** > Select `GuardDuty`
+
+#### Format Message with Input Transformer
+
+**Input Path:**
+
+```json
+{
+  "severity": "$.detail.severity",
+  "Finding_ID": "$.detail.id",
+  "Finding_Type": "$.detail.type",
+  "region": "$.region",
+  "Finding_description": "$.detail.description"
+}
+```
+
+**Template:**
+
+```text
+You have a severity severity GuardDuty finding type Finding_Type in the Region region.
+
+Description:
+Finding_description
+
+See more: https://console.aws.amazon.com/guardduty/home?region=region#/findings?search=id%3DFinding_ID
+```
+
+---
+
+## Next Steps
+
+### Customize GuardDuty Behavior
+
+* **Finding Filters:** Create custom filters to group similar findings (e.g., by instance ID or account ID).
+* **Suppression Rules:** Automatically archive expected behavior findings.
+* **Trusted IP Lists & Threat Lists:** Allowlist or explicitly monitor known IPs.
+
+### Stay Updated
+
+* Use **Security Hub** for centralized monitoring.
+* Use **Amazon Detective** for deeper investigations.
+* Use **AWS Config** to track compliance changes.
+
+---
+
+## Summary
+
+With Amazon GuardDuty:
+
+* You get intelligent threat detection across AWS resources.
+* You can automate response workflows.
+* You can retain findings securely and gain historical insights.
+* You can continuously adapt with filters, suppression rules, and IP lists.
+
 
