@@ -7,17 +7,17 @@ Amazon GuardDuty is a **managed threat detection service** that helps protect yo
   - **Contextual Analysis** for understanding threats in real time.
 
 - **Amazon GuardDuty** is a managed threat detection service that continuously monitors for malicious activity and unauthorized behavior. It uses multiple foundational data sources:
-* AWS CloudTrail management events
-* Amazon VPC Flow Logs
-* Amazon Route 53 DNS query logs
+  - AWS CloudTrail management events
+  - Amazon VPC Flow Logs
+  - Amazon Route 53 DNS query logs
 
 - GuardDuty can also monitor additional optional data sources (called protection types) such as:
-* Amazon S3 data events
-* EKS audit logs
-* RDS login activity
-* Lambda network logs
-* Runtime Monitoring (for EC2, ECS, EKS)
-* EBS volumes (Malware scan)
+  - Amazon S3 data events
+  - EKS audit logs
+  - RDS login activity
+  - Lambda network logs
+  - Runtime Monitoring (for EC2, ECS, EKS)
+  - EBS volumes (Malware scan)
 
 - **Easy to Use**
   - **One-click activation** — No need for complex setup or agents.
@@ -382,15 +382,7 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 
 ---
 
-## Getting Started
-# Amazon GuardDuty Hands-On Documentation
-
----
-
-## Before You Begin
-
-
-
+## Amazon GuardDuty Hands-On Documentation
 ### Key Notes:
 
 * GuardDuty is a **Regional service** — it must be enabled in every AWS Region you wish to monitor.
@@ -400,6 +392,9 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 
   * `AWSServiceRoleForAmazonGuardDuty`
   * `AWSServiceRoleForAmazonGuardDutyMalwareProtection`
+
+<details>
+  <summary>Click to view step by step hands on as per the documentation</summary>
 
 ---
 
@@ -573,6 +568,8 @@ See more: https://console.aws.amazon.com/guardduty/home?region=region#/findings?
 * Use **Security Hub** for centralized monitoring.
 * Use **Amazon Detective** for deeper investigations.
 * Use **AWS Config** to track compliance changes.
+
+</details>
 
 ---
 
