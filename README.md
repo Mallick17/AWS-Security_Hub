@@ -571,9 +571,159 @@ See more: https://console.aws.amazon.com/guardduty/home?region=region#/findings?
 
 </details>
 
+Great! Here's a **clear comparison table** of all GuardDuty protection plans followed by **sample finding outputs** for each (S3, EKS, RDS, Lambda).
+
 ---
 
-## Summary
+## ✅ GuardDuty Protection Plan Comparison Table
+
+| Protection Plan              | Data Source / Signal                        | Auto-Enabled with GuardDuty?   | Detects                   | Example Threats                                        |
+| ---------------------------- | ------------------------------------------- | ------------------------------ | ------------------------- | ------------------------------------------------------ |
+| **S3 Protection**            | Amazon S3 Data Events (via CloudTrail)      | ❌ Optional                     | Data-level anomalies      | Data exfiltration, ransomware deletion, access via Tor |
+| **EKS Protection**           | Kubernetes Audit Logs                       | ❌ Optional                     | API-level anomalies       | Privilege escalation, unusual API calls                |
+| **RDS Protection**           | Login activity to RDS/Aurora DBs            | ❌ Optional                     | Access anomalies          | Brute-force login attempts, unusual DB client IPs      |
+| **Lambda Protection**        | VPC Flow Logs (for Lambda functions in VPC) | ❌ Optional                     | Network threats           | Lambda reaching malware hosts, crypto mining           |
+| **Runtime Monitoring**       | OS-level events from EC2, ECS, EKS          | ❌ Optional                     | Process and system events | Reverse shells, unauthorized tools                     |
+| **Malware Protection (EC2)** | EBS Volume Snapshots (agentless scan)       | ✅ Auto-enabled in most Regions | Malware files             | Detected malware in EBS volumes                        |
+| **Malware Protection (S3)**  | Newly uploaded S3 objects                   | ❌ Optional + Independent       | Malware files             | Malicious uploads to public/private buckets            |
+
+---
+
+## Sample GuardDuty Finding Outputs
+
+### 🪣 S3 Protection Finding
+
+**Finding Type:** `S3.Bucket-Exfiltration.Unusual`
+**Severity:** Medium
+
+```json
+{
+  "resource": {
+    "resourceType": "S3Bucket",
+    "instanceDetails": {
+      "bucketName": "my-finance-records"
+    }
+  },
+  "service": {
+    "action": {
+      "actionType": "AWS_API_CALL",
+      "apiCallDetails": {
+        "api": "GetObject",
+        "callerType": "Remote IP",
+        "remoteIpDetails": {
+          "ipAddressV4": "203.0.113.45",
+          "country": "Russia"
+        }
+      }
+    },
+    "additionalInfo": {
+      "anomaly": "Large volume of access from unfamiliar location"
+    }
+  }
+}
+```
+
+---
+
+### ☸️ EKS Protection Finding
+
+**Finding Type:** `EKS.AccessKubernetesAPI.AnomalousBehavior`
+**Severity:** High
+
+```json
+{
+  "resource": {
+    "resourceType": "KubernetesCluster",
+    "instanceDetails": {
+      "clusterName": "prod-eks-cluster"
+    }
+  },
+  "service": {
+    "action": {
+      "apiCallDetails": {
+        "api": "createSecret",
+        "username": "system:anonymous"
+      }
+    },
+    "additionalInfo": {
+      "kubernetesUserAgent": "kubectl/v1.21.1",
+      "anomaly": "Unauthorized user attempting to create secret"
+    }
+  }
+}
+```
+
+---
+
+### 🛢️ RDS Protection Finding
+
+**Finding Type:** `RDS.LoginAnomaly.Behavioral`
+**Severity:** Medium
+
+```json
+{
+  "resource": {
+    "resourceType": "RDSInstance",
+    "instanceDetails": {
+      "dbInstanceIdentifier": "customer-db-prod"
+    }
+  },
+  "service": {
+    "action": {
+      "loginDetails": {
+        "username": "admin",
+        "sourceIp": "45.10.10.12",
+        "location": "Unknown"
+      }
+    },
+    "additionalInfo": {
+      "anomaly": "Login from a previously unseen location and client"
+    }
+  }
+}
+```
+
+---
+
+### ⚡ Lambda Protection Finding
+
+**Finding Type:** `Lambda.FunctionCommunication.MaliciousDomain`
+**Severity:** High
+
+```json
+{
+  "resource": {
+    "resourceType": "LambdaFunction",
+    "instanceDetails": {
+      "functionName": "transaction-handler"
+    }
+  },
+  "service": {
+    "action": {
+      "networkConnectionAction": {
+        "remoteDomain": "cryptominer-malware.com",
+        "protocol": "HTTPS"
+      }
+    },
+    "additionalInfo": {
+      "threatIntelIndicators": [
+        {
+          "type": "MaliciousDomain",
+          "value": "cryptominer-malware.com"
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+## 📌 Summary
+
+* Once you enable protection plans for **S3, EKS, RDS, and Lambda**, GuardDuty will automatically begin **monitoring all relevant resources** using backend telemetry.
+* The findings generated are **context-aware, JSON-formatted**, and **include resource identifiers**, event types, severities, and helpful remediation links.
+* You can use EventBridge, Security Hub, or even Lambda to **automate responses** to these findings.
 
 With Amazon GuardDuty:
 
