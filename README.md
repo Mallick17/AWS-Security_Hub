@@ -590,7 +590,7 @@ Great! Here's a **clear comparison table** of all GuardDuty protection plans fol
 ---
 
 ## Sample GuardDuty Finding Outputs
-![image](https://github.com/user-attachments/assets/07a21a9c-c6fc-4216-86e8-5a540eea2237)
+![image](https://github.com/user-attachments/assets/5a9b4a73-643e-4067-a3f1-0c7a68a0ab78)
 
 ### 🪣 S3 Protection Finding
 
