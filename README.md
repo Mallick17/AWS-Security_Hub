@@ -4,14 +4,14 @@ Amazon GuardDuty is a **managed threat detection service** that helps protect yo
 
 ---
 
-## 🚀 Key Highlights
+## Key Highlights
 
-### ✅ **Easy to Use**
+### **Easy to Use**
 
 * **One-click activation** — No need for complex setup or agents.
 * **Out-of-the-box functionality** — Immediate insights without extra configurations.
 
-### 🔍 **How It Works**
+### **How It Works**
 
 GuardDuty continuously analyzes **tens of billions of events per minute** from AWS data sources to:
 
@@ -19,7 +19,7 @@ GuardDuty continuously analyzes **tens of billions of events per minute** from A
 * Identify and **prioritize threats** based on context and risk.
 * Provide **security context** for faster incident response.
 
-### 🔗 **Integrated and Scalable**
+### **Integrated and Scalable**
 
 * Works across **EC2**, **ECS**, **EKS**, **AWS Lambda**, **RDS**, **Aurora**, and **S3**.
 * Seamless integration with **AWS services** like AWS Security Hub, Amazon EventBridge, and AWS Lambda for **automated remediation**.
@@ -27,7 +27,7 @@ GuardDuty continuously analyzes **tens of billions of events per minute** from A
 
 ---
 
-## 🧠 Technologies Behind GuardDuty
+## Technologies Behind GuardDuty
 
 * **Machine Learning (ML)** to identify anomalies.
 * **Threat Intelligence Feeds** from AWS and partners (e.g., malicious IPs/domains, malware hashes).
@@ -35,7 +35,7 @@ GuardDuty continuously analyzes **tens of billions of events per minute** from A
 
 ---
 
-## ⚠️ What GuardDuty Can Detect
+## What GuardDuty Can Detect
 
 | 🧨 Threat Type                          | 🔍 Description                                                                      |
 | --------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -48,7 +48,7 @@ GuardDuty continuously analyzes **tens of billions of events per minute** from A
 
 ---
 
-## ✅ Benefits
+## Benefits
 
 * **Continuous monitoring** across AWS accounts and regions.
 * **No agent required** – Fully managed.
@@ -105,13 +105,9 @@ GuardDuty pieces these events together and creates a single **attack sequence fi
 ---
 
 ### 3. **Use-Case Focused Protection Plans**
-
 GuardDuty offers optional "add-on" features for **specific AWS services** to enhance security.
 
----
-
 ### **S3 Protection**
-
 Analyzes access patterns and newly uploaded files in your Amazon S3 buckets.
 
 <details>
@@ -130,7 +126,6 @@ If someone downloads hundreds of files in a short time from an S3 bucket, GuardD
 ---
 
 ### **EKS Protection**
-
 Monitors Kubernetes API (audit logs) in Amazon EKS for suspicious behavior.
 
 <details>
@@ -149,7 +144,6 @@ A user tries to escalate privileges using `kubectl create clusterrolebinding`:
 ---
 
 ### **Runtime Monitoring**
-
 Watches system-level activity (like file or process operations) in EC2, ECS (Fargate), and EKS.
 
 <details>
@@ -380,28 +374,28 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 
 ---
 
-## 💰 Pricing & Trial
+## Pricing & Trial
 
 * **Pay-as-you-go** – No upfront costs or commitments.
 * **30-day free trial** – Try GuardDuty risk-free.
 
 ---
 
-## 📝 Final Notes:
+## Final Notes:
 
-* 🧠 **Intelligent & Contextual:** Uses ML + threat feeds
-* 🔐 **Broad Coverage:** From EC2 to Lambda, S3 to EKS
-* ⚙️ **Automation Friendly:** With EventBridge and Security Hub
+* **Intelligent & Contextual:** Uses ML + threat feeds
+* **Broad Coverage:** From EC2 to Lambda, S3 to EKS
+* **Automation Friendly:** With EventBridge and Security Hub
 
 ---
 
-## 📌 Getting Started
+## Getting Started
 
 1. Go to the **Amazon GuardDuty console**.
 2. Click **"Enable GuardDuty"** for your account.
 3. (Optional) Integrate with AWS Organizations to monitor multiple accounts.
 
-## 🔗 Useful Links
+## Useful Links
 
 * [Amazon GuardDuty Official Documentation](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)
 * [Getting Started with GuardDuty](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-getting-started.html)
