@@ -219,6 +219,53 @@ Multiple failed login attempts from an IP in another country:
 
 </details>
 
+
+#### **GuardDuty RDS Protection – Supported MySQL Versions**
+- Supported for **Amazon Aurora MySQL**:
+  - **Aurora MySQL version 2.10.2 or later**
+  - **Aurora MySQL version 3.02.1 or later**
+
+> So if you're using **Aurora MySQL** (not regular RDS for MySQL), and you're on one of the above versions, **GuardDuty RDS Protection** **will monitor login activity** and generate findings based on anomalies.
+
+#### **Not Supported for RDS for MySQL (standard RDS)**
+
+GuardDuty **does not currently support**:
+
+* Regular **Amazon RDS for MySQL**
+* Self-managed MySQL (on EC2, for example)
+
+The documentation specifically lists **Aurora MySQL**, not RDS MySQL, in the supported engines.
+
+#### What GuardDuty Monitors for Aurora MySQL
+
+Once enabled:
+
+* It **automatically collects RDS login activity** (successful, failed, and incomplete logins).
+* It uses this to detect **suspicious login patterns**, such as:
+
+  * Brute force attacks
+  * Unusual source IPs or geolocations
+  * Unexpected login times or credentials
+
+### Learning Period
+
+When you first enable RDS Protection or create a new DB instance:
+
+* GuardDuty undergoes a **learning period (up to 2 weeks)** to baseline what “normal” looks like.
+* During this time, **no findings will be generated**, even if login activity occurs.
+
+### Summary
+
+| Engine                                           | Supported by GuardDuty RDS Protection? | Notes                                              |
+| ------------------------------------------------ | -------------------------------------- | -------------------------------------------------- |
+| **Aurora MySQL 2.10.2+ / 3.02.1+**               | ✅ Yes                                  | Must be one of the listed versions                 |
+| **RDS for MySQL**                                | ❌ No                                   | Not currently supported                            |
+| **Aurora PostgreSQL (10.23+ to 16.1+)**          | ✅ Yes                                  | Fully supported                                    |
+| **RDS for PostgreSQL**                           | ✅ Yes                                  | From versions 11.17+, 12.12+, 13.8+, 14.5+, 15, 16 |
+| **Aurora PostgreSQL Limitless (16.4-limitless)** | ✅ Yes                                  | Explicitly supported                               |
+
+If you're using Aurora MySQL on a supported version, GuardDuty RDS Protection will monitor and alert on login threats. 
+
 ---
 
 ### **Lambda Protection**
