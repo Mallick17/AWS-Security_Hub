@@ -597,7 +597,7 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
 
 ---
 
-**S3 Protection**
+# **S3 Protection**
 
 1. **GuardDuty Checks for S3**
    GuardDuty ingests these data sources (plus optional features) to detect threats against your S3 buckets:
