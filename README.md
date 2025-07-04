@@ -618,8 +618,6 @@ See more: https://console.aws.amazon.com/guardduty/home?region=region#/findings?
 
 </details>
 
-Great! Here's a **clear comparison table** of all GuardDuty protection plans followed by **sample finding outputs** for each (S3, EKS, RDS, Lambda).
-
 ---
 
 ## ✅ GuardDuty Protection Plan Comparison Table
@@ -635,6 +633,9 @@ Great! Here's a **clear comparison table** of all GuardDuty protection plans fol
 | **Malware Protection (S3)**  | Newly uploaded S3 objects                   | ❌ Optional + Independent       | Malware files             | Malicious uploads to public/private buckets            |
 
 ---
+
+<details>
+  <summary>Sample GuardDuty Finding Outputs</summary>
 
 ## Sample GuardDuty Finding Outputs
 ![image](https://github.com/user-attachments/assets/f8be85a7-3995-4254-864f-2b586e94670d)
@@ -764,6 +765,8 @@ Great! Here's a **clear comparison table** of all GuardDuty protection plans fol
   }
 }
 ```
+
+</details>
 
 ---
 
