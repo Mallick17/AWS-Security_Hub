@@ -430,13 +430,6 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 # EC2 Protection
 ## 1. GuardDuty Checks for EC2
 GuardDuty analyzes three primary data sources (plus optional features) to detect threats affecting EC2 instances:
-Here’s the **updated “GuardDuty Checks for EC2”** section, now including **Runtime Monitoring** and **EBS Volume Scans**, with what each captures and an EC2‑focused threat example.
-
----
-
-## 1. GuardDuty Checks for EC2
-
-GuardDuty analyzes these data sources (and optional features) to detect threats against your EC2 instances:
 
 | Data Source / Feature     | What It Captures                                                     | Example EC2‑Related Threat & Finding                                                                              |                                           |
 | ------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
