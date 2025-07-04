@@ -428,6 +428,10 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 ---
 
 # EC2 Protection
+
+<details>
+  <summary>Click to see brief analysis for EC2 Protection</summary>
+
 ## 1. GuardDuty Checks for EC2
 GuardDuty analyzes three primary data sources (plus optional features) to detect threats affecting EC2 instances:
 
@@ -577,10 +581,15 @@ When suspicious EC2 activity is detected, GuardDuty generates **JSON findings** 
      + Malware scans (e.g. 50 GB EBS) → 50 × $1 = $50/month
      = ~$74/month total
      ```
+
+</details>
      
 ---
 
 # **RDS Protection**
+
+<details>
+  <summary>Click to see brief analysis for RDS Protection</summary>
 
 1. **GuardDuty Checks for RDS**
    GuardDuty ingests these data sources (plus default extended detection) to detect threats against your RDS/Aurora instances:
@@ -693,10 +702,14 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
 5. **Reconnaissance and evasion techniques** (e.g., DoH, DoT, DNS tunneling, Tor usage).
 6. **Outbound communication with malicious or suspicious domains and IPs**.
 
+</details>
 
 ---
 
 # **S3 Protection**
+
+<details>
+  <summary>Click to see brief analysis for S3 Protection</summary>
 
 1. **GuardDuty Checks for S3**
    GuardDuty ingests these data sources (plus optional features) to detect threats against your S3 buckets:
@@ -805,9 +818,14 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
      ~$5.80/month total
      ```
 
+</details>
+
 ---
 
 # **Lambda Protection**
+
+<details>
+  <summary>Click to see brief analysis for Lambda Protection</summary>
 
 1. **GuardDuty Checks for Lambda**
    GuardDuty ingests these data sources (plus optional features) to detect network‑based threats against your Lambda functions:
@@ -900,9 +918,14 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
      = 0.8M × $4 = $3.20/month
      ```
 
+</details>
+
 ---
 
 # **ECS Protection**
+
+<details>
+  <summary>Click to see brief analysis for ECS Protection</summary>
 
 1. **GuardDuty Checks for ECS**
    GuardDuty analyzes these data sources (plus optional features) to detect threats against your Amazon ECS workloads:
@@ -1002,6 +1025,8 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
      = ~$11.20/month total
      ```
 
+</details>
+
 ---
 
 # ECS Protection
@@ -1009,6 +1034,9 @@ GuardDuty doesn’t offer an **ECS‑specific** “protection plan.” Instead:
 
 * **Container workloads** on **ECS (both EC2-backed and Fargate)** are covered under **Runtime Monitoring**, which is a **general feature** for EC2/EKS/ECS.
 * There is **no standalone “ECS Protection”** toggle in GuardDuty.
+
+<details>
+  <summary>Click to see brief analysis for ECS Protection</summary>
 
 ## Container Runtime Monitoring (covers ECS & EKS)
 
@@ -1062,6 +1090,8 @@ GuardDuty doesn’t offer an **ECS‑specific** “protection plan.” Instead:
 6. **Cost**
 
    * All runtime events (process execs, file events) are billed under the **\$4 per 1 M events** rate (same as VPC, DNS, CloudTrail).
+
+</details>
 
 ---
 
