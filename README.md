@@ -901,6 +901,108 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
      ```
 
 ---
+
+# **ECS Protection**
+
+1. **GuardDuty Checks for ECS**
+   GuardDuty analyzes these data sources (plus optional features) to detect threats against your Amazon ECS workloads:
+
+   | Data Source / Feature            | What It Captures                                                             | Example ECS‑Related Threat & Finding                                                                                        |
+   | -------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+   | **CloudTrail Management Events** | ECS API calls (`RunTask`, `CreateService`, `RegisterTaskDefinition`, etc.)   | **Unauthorized Task Launch**: New task started by an unfamiliar IAM principal UnauthorizedAccess\:ECS/RunTaskUnauthorized |
+   | **VPC Flow Logs**                | Network traffic in/out of ENIs attached to ECS tasks (Fargate or EC2‑backed) | **Portscan**: Task probing another container’s port 8080 Recon\:ECS/PortscanContainerInstance                             |
+   | **DNS Query Logs**               | DNS lookups from within your ECS tasks (via Route 53 Resolver logs)          | **C2 Communication**: Container resolving a known malware C2 domain Backdoor\:ECS/C\&CActivity.B!DNS                      |
+   | **Runtime Monitoring** ⭐️        | OS‑ and container‑level telemetry: process execs, file writes, library loads | **Crypto‑Mining Container**: Detected `xmrig` process inside a Fargate task CryptoCurrency\:ECS/LinuxCryptominingTool     |
+   | **Extended Threat Detection**    | Correlates sequences across ECS, EC2, S3, etc., for multi‑stage attacks      | **Lateral Movement**: Compromised EC2 → ECS task launched → RDS login anomaly Behavior\:ECS/ContainerUnusualBehavior      |
+
+   ⭐️ *“Runtime Monitoring” and “Extended Threat Detection” must be enabled under GuardDuty “Additional features.”*
+
+2. **Enabling GuardDuty for ECS**
+
+   * **Console**
+
+     1. Open GuardDuty → **Settings**.
+     2. Under **Additional features**, toggle **Runtime Monitoring** and ensure **Extended Threat Detection** is enabled.
+     3. Click **Save**.
+
+   * **CLI**
+
+     ```bash
+     # Enable Runtime Monitoring (covers ECS)
+     aws guardduty update-detector \
+       --detector-id <detectorId> \
+       --enable-runtime-monitoring
+     ```
+
+3. **Prerequisites**
+
+   * **IAM Permissions**
+
+     * To enable GuardDuty:
+       `guardduty:CreateDetector`, `guardduty:UpdateDetector`, `iam:CreateServiceLinkedRole`
+     * To access findings:
+       `guardduty:GetFindings`, `guardduty:ListFindings`
+
+   * **Service‑Linked Roles**
+
+     * `AWSServiceRoleForAmazonGuardDuty` (foundational logs)
+
+   * **Logging Configuration**
+
+     * **VPC Flow Logs**: enabled for the subnets hosting ECS tasks.
+     * **Route 53 Resolver Query Logs**: optional for DNS visibility.
+     * **CloudTrail**: management events must be enabled (default).
+
+   * **Regional Considerations**
+
+     * GuardDuty is regional; repeat per Region.
+     * Recommended to enable in all Regions to capture any cross‑region task operations.
+
+4. **What You’ll Receive: ECS Findings**
+
+   When suspicious ECS activity is detected, GuardDuty generates JSON findings that include:
+
+   * **Finding Type** (e.g., `CryptoCurrency:ECS/LinuxCryptominingTool`)
+   * **Severity** (0.1–8.9 mapped to Low/Medium/High)
+   * **Resource Details**:
+
+     * `resourceType: "Container"`
+     * `containerId`, `taskDefinitionArn`, `clusterArn`, `launchType`
+   * **Service Action**: network action or API call details
+   * **Evidence**: process name, remote IP/domain, API caller ARN
+   * **Remediation Guidance**: links to the ECS console and AWS docs
+
+5. **Benefits for ECS Security**
+
+   | Benefit                              | Description                                                                    |
+   | ------------------------------------ | ------------------------------------------------------------------------------ |
+   | **Container‑Level Threat Detection** | Flags crypto‑mining, binaries, and anomalous process activity inside tasks.    |
+   | **Network & API Monitoring**         | Detects port scans, C2 calls, unauthorized task launches, and DNS abuse.       |
+   | **Agentless & Serverless‑Aware**     | No sidecars or agents—uses AWS logs and built‑in telemetry for Fargate.        |
+   | **Multi‑Stage Attack Correlation**   | Links suspicious EC2, ECS, and other service events for end‑to‑end visibility. |
+   | **Automated Response**               | Integrates with EventBridge → Lambda/SNS/Security Hub for immediate action.    |
+
+6. **Cost Model**
+
+   * **Threat Detection Events**
+
+     * **\$4.00 per 1 million events** analyzed from CloudTrail, VPC Flow Logs, DNS Query Logs.
+     * Runtime Monitoring events (process execs, file events) are included in this rate.
+
+   * **Free Trial**
+
+     * 30‑day full‑feature trial per Region.
+
+   * **Example Estimate**
+
+     ```
+     2 million Flow Log + 0.5 million DNS + 0.3 million CloudTrail events
+     = 2.8 M × $4 = $11.20/month
+     + Runtime Monitoring telemetry (0.2 M events) included
+     = ~$11.20/month total
+     ```
+
+---
 ## Pricing & Trial
 
 * **Pay-as-you-go** – No upfront costs or commitments.
