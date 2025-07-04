@@ -597,6 +597,117 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
 
 ---
 
+**S3 Protection**
+
+1. **GuardDuty Checks for S3**
+   GuardDuty ingests these data sources (plus optional features) to detect threats against your S3 buckets:
+
+   | Data Source / Feature            | What It Captures                                                        | Example S3‑Related Threat & Finding                                                                                   |
+   | -------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+   | **CloudTrail Data Events**       | API calls on S3 objects (GetObject, PutObject, DeleteObject, etc.)      | **Unusual Data Download**: Hundreds of GetObject calls in 5 minutes from a single IP S3.Bucket‑Exfiltration.Unusual |
+   | **S3 Server Access Logs**        | Detailed request logs (if you’ve enabled server logging on your bucket) | **Public Bucket Enumeration**: Repeated ListBucket requests from multiple geographies S3.Bucket‑Enumeration.Unusual |
+   | **DNS Query Logs**               | DNS lookups originating from S3 endpoints                               | **Phishing Redirect**: Resolving a known phishing domain in object URL S3.Bucket‑PublicAccess.ProhibitedDNSRequest  |
+   | **Malware Protection for S3** ⭐️ | Scans newly uploaded objects for known malware signatures               | **Malicious Upload**: Detected Trojan in a newly uploaded ZIP Malware\:S3/Object.MalwareSignatureMatch              |
+
+   ⭐️ *Optional feature; must explicitly enable “S3 Malware Protection” under GuardDuty “Additional Features.”*
+
+2. **Enabling GuardDuty for S3**
+<details>
+  <summary>Click to view console steps and CLI/SDK</summary>
+
+   * **Console**
+
+     1. Open the GuardDuty console → **Settings**.
+     2. Under **Additional features**, toggle **S3 Protection** and/or **S3 Malware Protection**.
+     3. Click **Save**.
+
+   * **CLI**
+
+     ```bash
+     # Enable S3 Protection (data events)
+     aws guardduty update-detector \
+       --detector-id <detectorId> \
+       --enable-s3-logs
+     # Enable S3 Malware Protection
+     aws guardduty update-detector \
+       --detector-id <detectorId> \
+       --enable-malware-protection-for-s3
+     ```
+
+</details>
+
+3. **Prerequisites**
+
+   * **IAM Permissions**
+
+     * To enable GuardDuty:
+       `guardduty:CreateDetector`, `guardduty:UpdateDetector`, `iam:CreateServiceLinkedRole`
+     * To configure S3 export (if used):
+       `s3:PutBucketPolicy`, `kms:GenerateDataKey` (for KMS‑encrypted exports)
+
+   * **Service‑Linked Roles**
+
+     * `AWSServiceRoleForAmazonGuardDuty` (foundational)
+     * `AWSServiceRoleForAmazonGuardDutyMalwareProtection` (for S3 malware scans)
+
+   * **Logging Configuration**
+
+     * **CloudTrail**: must have **Data Events** enabled for the target buckets.
+     * **S3 Server Access Logs** (optional): enable on the bucket if you want detailed request logs.
+     * **Route 53 Resolver Query Logs** (optional): if you need DNS‑based alerts on S3 endpoints.
+
+   * **Regional Considerations**
+
+     * GuardDuty is regional—repeat enablement per Region.
+     * Recommended: enable in all Regions to catch cross‑region activity.
+
+4. **What You’ll Receive: S3 Findings**
+
+   When suspicious S3 activity is detected, GuardDuty generates JSON findings that include:
+
+   * **Finding Type** (e.g., `S3.Bucket-Exfiltration.Unusual`)
+   * **Severity** (0.1–8.9 mapped to Low/Medium/High)
+   * **Resource Details**:
+
+     * `resourceType: "S3Bucket"`
+     * `bucketName`, `objectKey` (if applicable)
+   * **Service Action**: API call details or malware signature match
+   * **Evidence**: source IP, IAM principal, request parameters, malware hash
+   * **Remediation Guidance**: direct links to the S3 console and AWS docs
+
+5. **Benefits for S3 Security**
+
+   | Benefit                      | Description                                                                    |
+   | ---------------------------- | ------------------------------------------------------------------------------ |
+   | **Detect Data Exfiltration** | Flags unusual download patterns or mass deletions.                             |
+   | **Malware Upload Detection** | Scans newly uploaded objects for viruses/trojans without agents.               |
+   | **Minimal Configuration**    | No agents—uses existing CloudTrail and optional server logs.                   |
+   | **Contextual Alerts**        | Includes request details (IP, user, object) for faster triage.                 |
+   | **Automated Workflows**      | Integrates with EventBridge → Lambda/SNS/Security Hub to quarantine or notify. |
+
+6. **Cost Model**
+
+   * **Threat Detection (Data Events)**
+
+     * \$4.00 per 1 million S3 Data Events analyzed (GetObject, PutObject, etc.)
+   * **Malware Protection for S3**
+
+     * \$1.00 per 1,000 objects scanned
+   * **Free Trial**
+
+     * 30-day free trial per Region for all enabled features
+   * **Example Estimate**
+
+     ```
+     200K GetObject events/month → 0.2M × $4 = $0.80
+     +
+     5,000 objects scanned → 5 × $1 = $5.00
+     =
+     ~$5.80/month total
+     ```
+
+
+---
 ## Pricing & Trial
 
 * **Pay-as-you-go** – No upfront costs or commitments.
