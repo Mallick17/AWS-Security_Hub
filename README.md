@@ -428,6 +428,133 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 ---
 
 # EC2 Protection
+## 1. GuardDuty Checks for EC2
+GuardDuty analyzes three primary data sources (plus optional features) to detect threats affecting EC2 instances:
+
+| Data Source               | What It Captures                                                     | Example EC2‑Related Threats                                              |
+| ------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **VPC Flow Logs**         | IP traffic in/out of ENIs attached to EC2 instances                  | Port scans, DDoS, data exfiltration over unexpected ports                |
+| **AWS CloudTrail (Mgmt)** | EC2 API calls (RunInstances, StopInstances, DescribeInstances, etc.) | Unauthorized API usage, creation of new instances via stolen credentials |
+| **DNS Query Logs**        | DNS lookups from EC2 (via Route 53 Resolver logs)                    | Communication with command‑and‑control domains, DNS tunneling            |
+
+> **Optional Runtime Monitoring**
+> When enabled, GuardDuty also ingests OS‑level telemetry for EC2 (and containers) to detect suspicious processes, file changes, or shell activity.
+
+---
+
+## 2. Enabling GuardDuty for EC2
+
+### 2.1 Console Steps
+
+1. **Sign in** to the AWS Management Console in the target Region.
+2. Navigate to **Security, Identity, & Compliance → GuardDuty**.
+3. Click **Enable GuardDuty** (or **Get started** if first time).
+4. (Optional) Under **Additional features**, enable:
+
+   * **Runtime Monitoring**
+   * **Malware Protection for EC2**
+5. **Save**. GuardDuty immediately begins ingesting VPC Flow Logs, CloudTrail management events, and DNS logs.
+
+### 2.2 CLI / SDK
+
+```bash
+# Create or retrieve detector
+aws guardduty create-detector --enable
+# Enable Malware Protection
+aws guardduty update-detector --detector-id <detectorId> \
+  --finding-publishing-frequency FIFTEEN_MINUTES \
+  --enable-malware-protection
+```
+
+---
+
+## 3. Prerequisites
+
+1. **IAM Permissions**
+
+   * To enable GuardDuty: `guardduty:CreateDetector`, `guardduty:UpdateDetector`, `iam:CreateServiceLinkedRole`
+   * To access findings: `guardduty:GetFindings`, `guardduty:ListFindings`
+
+2. **Service‑Linked Roles**
+
+   * `AWSServiceRoleForAmazonGuardDuty` (foundational logs)
+   * `AWSServiceRoleForAmazonGuardDutyMalwareProtection` (EBS volume scanning)
+
+3. **Regional Considerations**
+
+   * GuardDuty is **regional**. Repeat enablement per Region.
+   * Recommended: enable in **all Regions** (even unused) to capture global events (e.g., IAM).
+
+4. **Logging Configuration**
+
+   * **VPC Flow Logs** and **CloudTrail** must be active in the VPC/account (GuardDuty reads from AWS‑managed streams; you only need to turn those logs on if you want your own archive).
+   * **Route 53 Resolver Query Logs** must be enabled if you need DNS-based telemetry (GuardDuty uses its own Resolver logging channel).
+
+---
+
+## 4. What You’ll Receive: EC2 Findings
+
+When suspicious EC2 activity is detected, GuardDuty generates **JSON findings** with:
+
+* **Finding Type** (e.g., `Backdoor:EC2/C&CActivity.B`)
+* **Severity** (0.1–8.9 scale mapped to Low/Medium/High)
+* **Resource Details**:
+
+  * `resourceType: "Instance"`
+  * `instanceId`, `ownerId`, `availabilityZone`
+* **Service Action**: API call or network action
+* **Evidence**: IP addresses, domains, user agents, process names
+* **Remediation Guidance**: Links to the EC2 console and AWS docs
+
+---
+
+## 5. Benefits for EC2 Security
+
+| Benefit                       | Description                                                                      |
+| ----------------------------- | -------------------------------------------------------------------------------- |
+| **Broad Threat Coverage**     | Detects port scans, brute‑force (SSH/RDP), C\&C, crypto‑mining, malware.         |
+| **Agentless**                 | No software installs on your instances; uses existing AWS logs/streams.          |
+| **Behavioral & Intelligence** | ML‑based anomaly detection plus Threat Intelligence (malicious IP/domain lists). |
+| **Automated Response**        | Integrate with EventBridge → Lambda/SNS/Security Hub for real‑time remediation.  |
+| **Centralized Monitoring**    | Multi‑account support via AWS Organizations; single dashboard for all regions.   |
+
+---
+
+## 6. Cost Model
+
+1. **Threat Detection**
+
+   * **\$4.00 per million events** analyzed from CloudTrail, VPC Flow Logs, DNS logs
+   * Ingested events include management API calls, flow log records, DNS queries
+
+2. **Optional S3-Malware & EC2-Malware Protection**
+
+   * **EC2 Malware**: \$1.00 per GB of EBS volume scanned
+   * **S3 Malware**: \$1.00 per 1,000 objects scanned
+
+3. **Free Trial**
+
+   * **30 days free per Region** for all enabled features
+   * Full coverage for CloudTrail, VPC, DNS, and all protection plans during trial
+
+4. **Example Estimate**
+
+   * A medium account generating 5 million Flow Log records and 1 million CloudTrail events per month →
+
+     ```
+     (5M + 1M) / 1M × $4 = $24/month
+     + Malware scans (e.g. 50 GB EBS) → 50 × $1 = $50/month
+     = ~$74/month total
+     ```
+     
+---
+
+**Next Steps**:
+
+* Enable GuardDuty via CloudFormation/Terraform for automated deployments
+* Hook findings into Security Hub and EventBridge for centralized alerting and remediation
+* Review sample findings to fine‑tune suppression rules and trusted IP lists
+
 Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malicious behaviors. You’ll receive findings about:
 1. **Malware activity** (e.g., command-and-control, trojans, blackhole domains).
 2. **Credential abuse or unauthorized access** (e.g., SSH/RDP brute-force, metadata tampering).
