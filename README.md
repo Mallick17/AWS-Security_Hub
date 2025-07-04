@@ -427,6 +427,18 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 
 ---
 
+# EC2 Protection
+Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malicious behaviors. You’ll receive findings about:
+1. **Malware activity** (e.g., command-and-control, trojans, blackhole domains).
+2. **Credential abuse or unauthorized access** (e.g., SSH/RDP brute-force, metadata tampering).
+3. **Network-based threats** (e.g., port scans, DDoS, unusual traffic volumes).
+4. **Crypto mining operations** (e.g., Bitcoin tool usage or related domain activity).
+5. **Reconnaissance and evasion techniques** (e.g., DoH, DoT, DNS tunneling, Tor usage).
+6. **Outbound communication with malicious or suspicious domains and IPs**.
+
+
+---
+
 ## Pricing & Trial
 
 * **Pay-as-you-go** – No upfront costs or commitments.
