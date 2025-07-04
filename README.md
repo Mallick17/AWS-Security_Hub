@@ -431,7 +431,7 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 ## 1. GuardDuty Checks for EC2
 GuardDuty analyzes three primary data sources (plus optional features) to detect threats affecting EC2 instances:
 
-| Data Source / Feature     | What It Captures                                                     | Example EC2‑Related Threat & Finding                                                                              |                                           |
+| Data Source / Feature     | What It Captures                                                     | Example EC2‑Related Threat & Finding                                                                              |
 | ------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | 
 | **VPC Flow Logs**         | Network traffic in/out of ENIs attached to EC2                       | **Portscan**: External host probing TCP ports (e.g., SSH port 22) Recon\:EC2/Portscan                           | 
 | **CloudTrail Management** | EC2 API calls (RunInstances, StopInstances, DescribeInstances, etc.) | **Unauthorized Launch**: New instance spun up with stolen keys UnauthorizedAccess\:EC2/MaliciousIPCaller.Custom |
