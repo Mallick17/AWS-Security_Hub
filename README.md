@@ -805,6 +805,100 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
      ~$5.80/month total
      ```
 
+---
+
+# **Lambda Protection**
+
+1. **GuardDuty Checks for Lambda**
+   GuardDuty ingests these data sources (plus optional features) to detect network‑based threats against your Lambda functions:
+
+   | Data Source / Feature             | What It Captures                                                       | Example Lambda‑Related Threat & Finding                                                                                                   |
+   | --------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+   | **VPC Flow Logs**                 | In‑VPC network traffic to/from ENIs used by Lambda functions           | **Malicious C2**: Lambda in VPC connecting to known malware host Lambda.FunctionCommunication.MaliciousDomain                           |
+   | **DNS Query Logs**                | DNS lookups initiated by Lambda (via Route 53 Resolver logs)           | **Suspicious DNS**: Lambda resolving DGA domains Trojan\:Lambda/DGADomainRequest.B                                                      |
+   | **CloudTrail Management Events**  | Lambda API calls (`Invoke`, `CreateFunction`, `UpdateFunctionCode`)    | **Unauthorized Deploy**: New function version deployed by unusual principal UnauthorizedAccess\:Lambda/ConfigChange                     |
+   | **Extended Threat Detection**     | Correlates Lambda activity with other services for multi‑stage attacks | **Phishing Chain**: Compromised EC2 → Lambda invoked → S3 exfiltrate Recon\:EC2/Portscan + Lambda.FunctionCommunication.MaliciousDomain |
+
+   ⭐️ *Lambda uses managed runtimes; no OS‑level telemetry or EBS scans apply.*
+
+2. **Enabling GuardDuty for Lambda**
+
+   * **Console**
+
+     1. Open GuardDuty → **Settings**.
+     2. Under **Additional features**, toggle **Lambda Protection**.
+     3. Click **Save**.
+
+   * **CLI**
+
+     ```bash
+     aws guardduty update-detector \
+       --detector-id <detectorId> \
+       --enable-lambda-protection
+     ```
+
+3. **Prerequisites**
+
+   * **IAM Permissions**
+
+     * To enable GuardDuty:
+       `guardduty:CreateDetector`, `guardduty:UpdateDetector`, `iam:CreateServiceLinkedRole`
+     * To view findings:
+       `guardduty:GetFindings`, `guardduty:ListFindings`
+
+   * **Service‑Linked Role**
+
+     * `AWSServiceRoleForAmazonGuardDuty` (foundational logs)
+
+   * **Logging Configuration**
+
+     * **VPC Flow Logs**: must be enabled on the subnets used by your Lambda functions (if they run in a VPC).
+     * **Route 53 Resolver Query Logs**: enable if you need DNS‑based alerts for Lambda traffic.
+     * **CloudTrail**: management events enabled by default.
+
+   * **Regional Considerations**
+
+     * GuardDuty is regional; repeat per Region.
+     * Recommended to enable in all Regions to catch cross‑region Lambda invocations and global threats.
+
+4. **What You’ll Receive: Lambda Findings**
+
+   When suspicious Lambda activity is detected, GuardDuty generates JSON findings that include:
+
+   * **Finding Type** (e.g., `Lambda.FunctionCommunication.MaliciousDomain`)
+   * **Severity** (0.1–8.9 mapped to Low/Medium/High)
+   * **Resource Details**:
+
+     * `resourceType: "LambdaFunction"`
+     * `functionName`, `functionArn`, `region`
+   * **Service Action**: network action or API call details
+   * **Evidence**: remote IP/domain, DNS queries, caller identity
+   * **Remediation Guidance**: links to the Lambda console and AWS docs
+
+5. **Benefits for Lambda Security**
+
+   | Benefit                      | Description                                                                  |
+   | ---------------------------- | ---------------------------------------------------------------------------- |
+   | **Network Threat Detection** | Flags outbound C2, crypto‑mining, data exfiltration from within Lambda VPCs. |
+   | **DNS‑Based Alerts**         | Catches DNS tunneling, DGA domains, and phishing redirects from your code.   |
+   | **Configuration Monitoring** | Alerts on unauthorized function updates or misconfigurations.                |
+   | **Agentless**                | Uses existing VPC and CloudTrail logs—no code changes or agents required.    |
+   | **Automated Response**       | Integrates with EventBridge → Lambda/SNS/Security Hub to isolate or notify.  |
+
+6. **Cost Model**
+
+   * **Threat Detection Events**
+
+     * All Lambda‑related flow, DNS, and CloudTrail events count toward **\$4.00 per 1 million events**.
+   * **Free Trial**
+
+     * 30‑day full‑feature trial per Region.
+   * **Example Estimate**
+
+     ```
+     500K VPC Flow Log records + 200K DNS queries + 100K CloudTrail events/month
+     = 0.8M × $4 = $3.20/month
+     ```
 
 ---
 ## Pricing & Trial
@@ -1152,104 +1246,6 @@ See more: https://console.aws.amazon.com/guardduty/home?region=region#/findings?
 ```
 
 </details>
-
----
-
-# **Lambda Protection**
-
-1. **GuardDuty Checks for Lambda**
-   GuardDuty ingests these data sources (plus optional features) to detect network‑based threats against your Lambda functions:
-
-   | Data Source / Feature             | What It Captures                                                       | Example Lambda‑Related Threat & Finding                                                                                                   |
-   | --------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-   | **VPC Flow Logs**                 | In‑VPC network traffic to/from ENIs used by Lambda functions           | **Malicious C2**: Lambda in VPC connecting to known malware host Lambda.FunctionCommunication.MaliciousDomain                           |
-   | **DNS Query Logs**                | DNS lookups initiated by Lambda (via Route 53 Resolver logs)           | **Suspicious DNS**: Lambda resolving DGA domains Trojan\:Lambda/DGADomainRequest.B                                                      |
-   | **CloudTrail Management Events**  | Lambda API calls (`Invoke`, `CreateFunction`, `UpdateFunctionCode`)    | **Unauthorized Deploy**: New function version deployed by unusual principal UnauthorizedAccess\:Lambda/ConfigChange                     |
-   | **Extended Threat Detection**     | Correlates Lambda activity with other services for multi‑stage attacks | **Phishing Chain**: Compromised EC2 → Lambda invoked → S3 exfiltrate Recon\:EC2/Portscan + Lambda.FunctionCommunication.MaliciousDomain |
-
-   ⭐️ *Lambda uses managed runtimes; no OS‑level telemetry or EBS scans apply.*
-
-2. **Enabling GuardDuty for Lambda**
-
-   * **Console**
-
-     1. Open GuardDuty → **Settings**.
-     2. Under **Additional features**, toggle **Lambda Protection**.
-     3. Click **Save**.
-
-   * **CLI**
-
-     ```bash
-     aws guardduty update-detector \
-       --detector-id <detectorId> \
-       --enable-lambda-protection
-     ```
-
-3. **Prerequisites**
-
-   * **IAM Permissions**
-
-     * To enable GuardDuty:
-       `guardduty:CreateDetector`, `guardduty:UpdateDetector`, `iam:CreateServiceLinkedRole`
-     * To view findings:
-       `guardduty:GetFindings`, `guardduty:ListFindings`
-
-   * **Service‑Linked Role**
-
-     * `AWSServiceRoleForAmazonGuardDuty` (foundational logs)
-
-   * **Logging Configuration**
-
-     * **VPC Flow Logs**: must be enabled on the subnets used by your Lambda functions (if they run in a VPC).
-     * **Route 53 Resolver Query Logs**: enable if you need DNS‑based alerts for Lambda traffic.
-     * **CloudTrail**: management events enabled by default.
-
-   * **Regional Considerations**
-
-     * GuardDuty is regional; repeat per Region.
-     * Recommended to enable in all Regions to catch cross‑region Lambda invocations and global threats.
-
-4. **What You’ll Receive: Lambda Findings**
-
-   When suspicious Lambda activity is detected, GuardDuty generates JSON findings that include:
-
-   * **Finding Type** (e.g., `Lambda.FunctionCommunication.MaliciousDomain`)
-   * **Severity** (0.1–8.9 mapped to Low/Medium/High)
-   * **Resource Details**:
-
-     * `resourceType: "LambdaFunction"`
-     * `functionName`, `functionArn`, `region`
-   * **Service Action**: network action or API call details
-   * **Evidence**: remote IP/domain, DNS queries, caller identity
-   * **Remediation Guidance**: links to the Lambda console and AWS docs
-
-5. **Benefits for Lambda Security**
-
-   | Benefit                      | Description                                                                  |
-   | ---------------------------- | ---------------------------------------------------------------------------- |
-   | **Network Threat Detection** | Flags outbound C2, crypto‑mining, data exfiltration from within Lambda VPCs. |
-   | **DNS‑Based Alerts**         | Catches DNS tunneling, DGA domains, and phishing redirects from your code.   |
-   | **Configuration Monitoring** | Alerts on unauthorized function updates or misconfigurations.                |
-   | **Agentless**                | Uses existing VPC and CloudTrail logs—no code changes or agents required.    |
-   | **Automated Response**       | Integrates with EventBridge → Lambda/SNS/Security Hub to isolate or notify.  |
-
-6. **Cost Model**
-
-   * **Threat Detection Events**
-
-     * All Lambda‑related flow, DNS, and CloudTrail events count toward **\$4.00 per 1 million events**.
-   * **Free Trial**
-
-     * 30‑day full‑feature trial per Region.
-   * **Example Estimate**
-
-     ```
-     500K VPC Flow Log records + 200K DNS queries + 100K CloudTrail events/month
-     = 0.8M × $4 = $3.20/month
-     ```
-
----
-
 
 ---
 
