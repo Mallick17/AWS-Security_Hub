@@ -440,9 +440,9 @@ GuardDuty analyzes three primary data sources (plus optional features) to detect
 > **Optional Runtime Monitoring**
 > When enabled, GuardDuty also ingests OS‑level telemetry for EC2 (and containers) to detect suspicious processes, file changes, or shell activity.
 
----
-
 ## 2. Enabling GuardDuty for EC2
+<details>
+  <summary>Click to view console steps and CLI/SDK</summary>
 
 ### 2.1 Console Steps
 
@@ -466,7 +466,7 @@ aws guardduty update-detector --detector-id <detectorId> \
   --enable-malware-protection
 ```
 
----
+</details>
 
 ## 3. Prerequisites
 
@@ -490,8 +490,6 @@ aws guardduty update-detector --detector-id <detectorId> \
    * **VPC Flow Logs** and **CloudTrail** must be active in the VPC/account (GuardDuty reads from AWS‑managed streams; you only need to turn those logs on if you want your own archive).
    * **Route 53 Resolver Query Logs** must be enabled if you need DNS-based telemetry (GuardDuty uses its own Resolver logging channel).
 
----
-
 ## 4. What You’ll Receive: EC2 Findings
 
 When suspicious EC2 activity is detected, GuardDuty generates **JSON findings** with:
@@ -506,8 +504,6 @@ When suspicious EC2 activity is detected, GuardDuty generates **JSON findings** 
 * **Evidence**: IP addresses, domains, user agents, process names
 * **Remediation Guidance**: Links to the EC2 console and AWS docs
 
----
-
 ## 5. Benefits for EC2 Security
 
 | Benefit                       | Description                                                                      |
@@ -517,8 +513,6 @@ When suspicious EC2 activity is detected, GuardDuty generates **JSON findings** 
 | **Behavioral & Intelligence** | ML‑based anomaly detection plus Threat Intelligence (malicious IP/domain lists). |
 | **Automated Response**        | Integrate with EventBridge → Lambda/SNS/Security Hub for real‑time remediation.  |
 | **Centralized Monitoring**    | Multi‑account support via AWS Organizations; single dashboard for all regions.   |
-
----
 
 ## 6. Cost Model
 
