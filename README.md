@@ -580,6 +580,105 @@ When suspicious EC2 activity is detected, GuardDuty generates **JSON findings** 
      
 ---
 
+# **RDS Protection**
+
+1. **GuardDuty Checks for RDS**
+   GuardDuty ingests these data sources (plus default extended detection) to detect threats against your RDS/Aurora instances:
+
+   | Data Source / Feature            | What It Captures                                                      | Example RDS‑Related Threat & Finding                                                                                             |
+   | -------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+   | **CloudTrail Management Events** | RDS/Aurora DB login API calls (`Connect`, `Authenticate`, `Failover`) | **Brute‑Force Login**: Multiple failed `Connect` calls from same IP RDS.LoginAnomaly.Behavioral                                |
+   | **Extended Threat Detection**    | Correlates multi‑step attack sequences spanning RDS and other sources | **Data Exfiltration Chain**: Compromised EC2 → RDS read → S3 upload Backdoor\:EC2/C\&CActivity.B + RDS.LoginAnomaly.Behavioral |
+   | **RDS Protection Plan** ⭐️       | Profiles normal login patterns and flags anomalies (new IPs/clients)  | **Unusual Client**: Login from unknown JDBC driver at odd hours RDS.LoginAnomaly.Behavioral                                    |
+
+   ⭐️ *Optional “RDS Protection” under GuardDuty “Additional Features.”*
+
+2. **Enabling GuardDuty for RDS**
+
+   * **Console**
+
+     1. Open GuardDuty → **Settings**.
+     2. Under **Additional features**, toggle **RDS Protection**.
+     3. Click **Save**.
+
+   * **CLI**
+
+     ```bash
+     aws guardduty update-detector \
+       --detector-id <detectorId> \
+       --enable-rds-logs
+     ```
+
+3. **Prerequisites**
+
+   * **IAM Permissions**
+
+     * To enable GuardDuty:
+       `guardduty:CreateDetector`, `guardduty:UpdateDetector`, `iam:CreateServiceLinkedRole`
+     * To view findings:
+       `guardduty:GetFindings`, `guardduty:ListFindings`
+
+   * **Service‑Linked Roles**
+
+     * `AWSServiceRoleForAmazonGuardDuty` (foundational logs)
+
+   * **Logging Configuration**
+
+     * **CloudTrail**: must be enabled for management events in the account.
+     * No additional RDS-specific logging required—GuardDuty reads the AWS‑managed management event stream.
+
+   * **Regional Considerations**
+
+     * GuardDuty is regional; repeat per Region.
+     * Recommended to enable in all Regions to catch cross‑region IAM and RDS activity.
+
+4. **What You’ll Receive: RDS Findings**
+
+   When suspicious RDS activity is detected, GuardDuty generates JSON findings that include:
+
+   * **Finding Type** (e.g., `RDS.LoginAnomaly.Behavioral`)
+   * **Severity** (0.1–8.9 mapped to Low/Medium/High)
+   * **Resource Details**:
+
+     * `resourceType: "RDSInstance"`
+     * `dbInstanceIdentifier`, `engine`, `region`
+   * **Service Action**: API call details (`Connect`, `Failover`, etc.)
+   * **Evidence**: source IP, client driver, login success/failure counts
+   * **Remediation Guidance**: links to RDS console and AWS docs
+
+5. **Benefits for RDS Security**
+
+   | Benefit                     | Description                                                                         |
+   | --------------------------- | ----------------------------------------------------------------------------------- |
+   | **Login Anomaly Detection** | Flags brute‑force, credential stuffing, and unauthorized access attempts.           |
+   | **Behavioral Profiling**    | Learns normal login patterns (times, IP ranges, clients) to reduce false positives. |
+   | **Agentless**               | No database‑side agents—uses AWS log streams and ML models.                         |
+   | **Multi‑Stage Visibility**  | Correlates RDS events with EC2, S3, and other services for attack chain detection.  |
+   | **Automated Response**      | Integrates with EventBridge, Security Hub, or Lambda to block or alert.             |
+
+6. **Cost Model**
+
+   * **Threat Detection Events**
+
+     * Counts each CloudTrail management event (including RDS calls) toward the **\$4.00 per 1 million events** rate.
+     * No separate fee for RDS Protection—events are billed as part of standard threat detection.
+
+   * **Free Trial**
+
+     * 30-day full-feature trial per Region.
+
+   * **Example Estimate**
+
+     ```
+     100K RDS login events/month → 0.1M × $4 = $0.40
+     +
+     900K other events → 0.9M × $4 = $3.60
+     =
+     ~$4.00/month total
+     ```
+
+---
+
 **Next Steps**:
 
 * Enable GuardDuty via CloudFormation/Terraform for automated deployments
