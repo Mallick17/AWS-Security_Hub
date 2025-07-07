@@ -6,6 +6,8 @@ Amazon GuardDuty is a **managed threat detection service** that helps protect yo
   - **Threat Intelligence Feeds** from AWS and partners (e.g., malicious IPs/domains, malware hashes).
   - **Contextual Analysis** for understanding threats in real time.
 
+![image](https://github.com/user-attachments/assets/c0cace24-07c0-4029-bf7e-0c3f90a5c109)
+
 <details>
   <summary>Click to view detailed overview</summary>
 
