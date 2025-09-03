@@ -347,5 +347,7 @@ Security Hub integrates with many AWS services, either by **receiving** or **for
 * **Multi-Region Support**: You can configure cross-region aggregation for a global view.
 
 ---
----
+
+## AWS Systems Manager(SSM)
+- AWS Systems Manager allows you to view and control your AWS resources. It helps to identify and resolve operational issues quickly across multiple AWS resources, thereby simplifying operational tasks and reducing the time it takes to resolve them. With AWS Systems Manager, you can group resources, like Amazon EC2 instances or Amazon S3 buckets, by application, view operational data for monitoring and troubleshooting, and take action on your groups of resources. AWS Systems Manager helps you to maintain security and compliance by scanning your instances against your patch, configuration, and custom policies.
 
