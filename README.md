@@ -358,4 +358,7 @@ Security Hub integrates with many AWS services, either by **receiving** or **for
 ## AWS Shield
 - AWS Shield is a managed Distributed Denial of Service (DDoS) protection service that safeguards applications running on AWS. AWS Shield provides robust security measures.
 
-## 
+## AWS Config
+- AWS Config provides a detailed view of the resources associated with your AWS account, including how they are configured, how they are related to one another, and how the configurations and their relationships have changed over time.
+- AWS Config enables you to assess, audit, and evaluate the configurations of your AWS resources. It can be used to monitor and record compliance.
+
