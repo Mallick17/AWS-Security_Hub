@@ -353,5 +353,6 @@ Security Hub integrates with many AWS services, either by **receiving** or **for
 
 ## Amazon Inspector
 - Amazon Inspector is a security assessment service that helps improve the security and compliance of applications deployed on AWS. It does so by assessing applications for vulnerabilities or deviations from best practices.
+- Amazon Inspector is an automated security assessment service that helps improve the security and compliance of applications deployed on AWS. It automatically assesses applications for exposure, vulnerabilities, and deviations from best practices. After performing an assessment, Amazon Inspector produces a detailed list of security findings prioritized by level of severity. It can continuously monitor the company's EC2 instances, and it will be a perfect fit for the needs. The Inspector agent that runs on the EC2 instances collects behavior-based data, which can help identify when and where you might have software vulnerabilities or unintended network exposures.
 
 ## 
